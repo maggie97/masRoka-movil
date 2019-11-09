@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "F:\\Backup\\UASLP\\Ubicua\\Proyecto\\mas_roca\\build\\app\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "outputFile": "C:\\Users\\Control\\Documents\\GitHub\\masRoka-movil\\build\\app\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
             "map": [
                 {
-                    "source": "F:\\Backup\\UASLP\\Ubicua\\Proyecto\\mas_roca\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\Control\\Documents\\GitHub\\masRoka-movil\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
