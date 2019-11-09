@@ -1,4 +1,4 @@
-import 'Drawer.dart';
+import 'Cajon.dart';
 import 'package:flutter/material.dart';
 import 'package:mas_roca/Carrito.dart';
 class Detalles extends StatelessWidget {

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #Fri Nov 29 17:14:42 CST 2019
+=======
+#Sat Nov 09 12:10:39 CST 2019
+>>>>>>> Drawer
 base.0=C\:\\Users\\Control\\Documents\\GitHub\\masRoka-movil\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex
