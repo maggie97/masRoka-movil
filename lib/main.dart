@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'home.dart';
 void main() => runApp(MyApp());
 final naranja = new Color.fromRGBO(255,73,65,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
 final azul = new Color.fromRGBO(40,52,150,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
@@ -108,12 +108,12 @@ class _MyHomePageState extends State<MyHomePage> {
           } else if (cpEmail.isEmpty && cpPass.isNotEmpty) {
             mensaje = "The email field can't be empty";
           } else if (cpEmail == cpPass && cpEmail == "admin") {
-            /*
+
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Catalogo()),
+              MaterialPageRoute(builder: (context) => Menu()),
             );
-            */
+
             mensaje = "Congratulations! You're a f*cking hacker :v";
             ink = Colors.green;
           } else {
