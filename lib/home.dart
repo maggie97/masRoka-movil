@@ -1,6 +1,6 @@
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
-
+import 'Carrito.dart';
 class Menu extends StatelessWidget {
   // This widget is the root of your application.
 
@@ -28,8 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
 
@@ -165,7 +163,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ]))),
-        drawer: Cajon());
+        drawer: Cajon(),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Carrito()),
+            );
+          },
+          label: Text(""),
+          icon: Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+            size: 40.0,
+          ),
+          backgroundColor: Color.fromRGBO(255, 173, 65, .8),),
+    );
   }
 }
 
