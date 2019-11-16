@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #Fri Nov 29 17:14:42 CST 2019
 =======
 #Sat Nov 09 12:10:39 CST 2019
@@ -7,6 +8,9 @@
 =======
 #Wed Nov 13 17:14:53 CST 2019
 >>>>>>> Home terminado
+=======
+#Sat Nov 16 11:45:20 CST 2019
+>>>>>>> Carrito
 base.0=C\:\\Users\\Control\\Documents\\GitHub\\masRoka-movil\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex
