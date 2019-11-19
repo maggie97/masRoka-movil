@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'roca_modelo.dart';
-import 'roca_tarjeta.dart';
+import 'roca_lista.dart';
+import 'Drawer.dart';
 
 void main() => runApp(Catalogo());
 final naranja = new Color.fromRGBO(255, 73, 65, 1);
@@ -58,12 +59,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(backgroundColor: azul,
         appBar: AppBar(
-          title: Text('+ Roca ->> Catalogo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+          title: Text('Catalogo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           backgroundColor: azul,
         ),
-        body: Container(
-          child: RoCard(initialRocks[1]), // New code
+      body: Container(
+        // Remove the DogCard Widget.
+        // Instead, use your new DogList Class,
+        // Pass in the mock data from the list above.
+        child: Center( // Changed code
+          child: RocaList(initialRocks), // Changed code
         ),
+      ),
+        drawer: Cajon()
     );
   }
 }

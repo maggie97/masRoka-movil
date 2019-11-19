@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mas_roca/Catalogo.dart';
 import 'home.dart';
 class Cajon extends StatelessWidget {
 
@@ -53,7 +54,10 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Catalogo()),
+              );
             },
           ),
 
