@@ -1,6 +1,7 @@
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
 import 'Carrito.dart';
+import 'Detalles.dart';
 class Menu extends StatelessWidget {
   // This widget is the root of your application.
 
@@ -23,11 +24,13 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
 
@@ -84,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 new GestureDetector(
                     child: PhotoHero(
                       tag: "Antipulgas",
-                      ruta: "images/roca2.jpg",
+                      ruta: "images/Accesorio.jpg",
                       width: 150.0,
                     ),
                     onTap: () {}),
@@ -119,13 +122,26 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                ),
                 new GestureDetector(
                     child: PhotoHero(
                       tag: "Rocaa",
                       ruta: "images/roca2.jpg",
                       width: 150.0,
                     ),
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return DetailScreen2(
+                          ruta:
+                          "images/roca2.jpg",
+                          descripcion: "Familia de Rocas ROCKPET",
+                          precio: '999',
+                          caracteris: "Linda Familia de rocas unica y especial",
+                        );
+                      }));
+                    }),
                 Padding(
                   padding: EdgeInsets.all(5.0),
                 ),
@@ -180,6 +196,9 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Color.fromRGBO(255, 173, 65, .8),),
     );
   }
+
+
+
 }
 
 class PhotoHero extends StatelessWidget {
