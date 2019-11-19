@@ -24,11 +24,13 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
 
