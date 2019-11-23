@@ -1,4 +1,5 @@
 import 'Drawer.dart';
+import 'ConfirmaPago.dart';
 import 'package:flutter/material.dart';
 
 class Carrito extends StatelessWidget {
@@ -62,96 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
-                          Radius.circular(10.0) //         <--- border radius here
-                      )),
-                      child: Padding(
-                        padding:  const EdgeInsets.fromLTRB(0,0,0,0),
-                        child: Container(
-                          child: Column(
-                              children: <Widget>[
-                                Container(
-                                    child:Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                          child:Image.asset("images/roca1.jpg", width: 130, height: 130,alignment:Alignment.centerLeft,),
-                                        ),
-                                        Container(
-                                            padding:  const EdgeInsets.fromLTRB(150,15,0,0),
-                                            alignment: Alignment.topCenter,
-                                            child:Text("Roca Reggae",style: TextStyle(fontSize: 27.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
-                                        ),
-                                        Container(
-                                            padding:  const EdgeInsets.fromLTRB(150,50,0,0),
-                                            alignment: Alignment.topCenter,
-
-                                            child:Text("Cantidad: 2 ",style: TextStyle(fontSize: 20, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                        ),
-                                        Container(
-                                            padding:  const EdgeInsets.fromLTRB(150,80,0,0),
-                                            alignment: Alignment.topCenter,
-
-                                            child:Text("Precio: \$ 3.99",style: TextStyle(fontSize: 22.5, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                        ),
-                                      ]
-                                    )
-                                ),
-                                Padding(
-                                  padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
-                                    child:Container(
-                                    child:Stack(
-                                        children: <Widget>[
-                                          Container(
-                                              alignment: Alignment.topRight,
-                                              padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                              width: 100,
-                                              child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-                                                    color: Color.fromRGBO(40, 52, 150, 1),
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Detalles",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.topRight,
-                                            padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                            width: 220,
-                                            child:Material(
-                                              borderRadius: BorderRadius.circular(30.0),
-
-                                              color: Colors.red,
-                                              child: MaterialButton(
-                                                onPressed: () {
-                                                },
-                                                child: Text("Eliminar",
-                                                  textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-
-                                        ]
-                                    )
-                                ),
-                                )
-                              ]
-                          )
-                        )
-                      ),
-
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
@@ -167,24 +79,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                             children: <Widget>[
                                               Container(
                                                 padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                                child:Image.asset("images/roca1.jpg", width: 130, height: 130,alignment:Alignment.centerLeft,),
+                                                child:Image.asset("images/roca3.jpg", width: 100, height: 100,alignment:Alignment.centerLeft,),
                                               ),
                                               Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,15,0,0),
+                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
                                                   alignment: Alignment.topCenter,
-                                                  child:Text("Roca Reggae",style: TextStyle(fontSize: 27.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
+                                                  child:Text("Roca Colors",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
                                               ),
                                               Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,50,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Cantidad: 2 ",style: TextStyle(fontSize: 20, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,80,0,0),
+                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
                                                   alignment: Alignment.topCenter,
 
-                                                  child:Text("Precio: \$ 3.99",style: TextStyle(fontSize: 22.5, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                                  child:Text("Cantidad: 1 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
+                                                  alignment: Alignment.topCenter,
+
+                                                  child:Text("Precio: \$ 10.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
                                               ),
                                             ]
                                         )
@@ -197,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Container(
                                                   alignment: Alignment.topRight,
                                                   padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                                  width: 100,
+                                                  width: 90,
                                                   child:Material(
                                                     borderRadius: BorderRadius.circular(30.0),
                                                     color: Color.fromRGBO(40, 52, 150, 1),
@@ -213,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Container(
                                                   alignment: Alignment.topRight,
                                                   padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                                  width: 220,
+                                                  width: 210,
                                                   child:Material(
                                                     borderRadius: BorderRadius.circular(30.0),
 
@@ -240,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
@@ -256,24 +168,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                             children: <Widget>[
                                               Container(
                                                 padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                                child:Image.asset("images/roca1.jpg", width: 130, height: 130,alignment:Alignment.centerLeft,),
+                                                child:Image.asset("images/roca1.jpg", width: 100, height: 100,alignment:Alignment.centerLeft,),
                                               ),
                                               Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,15,0,0),
+                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
                                                   alignment: Alignment.topCenter,
-                                                  child:Text("Roca Reggae",style: TextStyle(fontSize: 27.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
+                                                  child:Text("Roca Reggae",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
                                               ),
                                               Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,50,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Cantidad: 2 ",style: TextStyle(fontSize: 20, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(150,80,0,0),
+                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
                                                   alignment: Alignment.topCenter,
 
-                                                  child:Text("Precio: \$ 3.99",style: TextStyle(fontSize: 22.5, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                                  child:Text("Cantidad: 2 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
+                                                  alignment: Alignment.topCenter,
+
+                                                  child:Text("Precio: \$ 3.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
                                               ),
                                             ]
                                         )
@@ -286,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Container(
                                                   alignment: Alignment.topRight,
                                                   padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                                  width: 100,
+                                                  width: 90,
                                                   child:Material(
                                                     borderRadius: BorderRadius.circular(30.0),
                                                     color: Color.fromRGBO(40, 52, 150, 1),
@@ -302,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 Container(
                                                   alignment: Alignment.topRight,
                                                   padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                                  width: 220,
+                                                  width: 210,
                                                   child:Material(
                                                     borderRadius: BorderRadius.circular(30.0),
 
@@ -329,7 +241,124 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+                    padding: EdgeInsets.all(10.0),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
+                          Radius.circular(10.0) //         <--- border radius here
+                      )),
+                      child: Padding(
+                          padding:  const EdgeInsets.fromLTRB(0,0,0,0),
+                          child: Container(
+                              child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                        child:Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                padding:  const EdgeInsets.fromLTRB(10,0,0,0),
+                                                child:Image.asset("images/roca4.png", width: 100, height: 100,alignment:Alignment.centerLeft,),
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
+                                                  alignment: Alignment.topCenter,
+                                                  child:Text("Rocky",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
+                                                  alignment: Alignment.topCenter,
+
+                                                  child:Text("Cantidad: 1 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
+                                                  alignment: Alignment.topCenter,
+
+                                                  child:Text("Precio: \$ 999.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
+                                              ),
+                                            ]
+                                        )
+                                    ),
+                                    Padding(
+                                      padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
+                                      child:Container(
+                                          child:Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                  alignment: Alignment.topRight,
+                                                  padding:  const EdgeInsets.fromLTRB(0,0,0,10),
+                                                  width: 90,
+                                                  child:Material(
+                                                    borderRadius: BorderRadius.circular(30.0),
+                                                    color: Color.fromRGBO(40, 52, 150, 1),
+                                                    child: MaterialButton(
+                                                      onPressed: () {
+                                                      },
+                                                      child: Text("Detalles",
+                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  alignment: Alignment.topRight,
+                                                  padding:  const EdgeInsets.fromLTRB(10,0,0,10),
+                                                  width: 210,
+                                                  child:Material(
+                                                    borderRadius: BorderRadius.circular(30.0),
+
+                                                    color: Colors.red,
+                                                    child: MaterialButton(
+                                                      onPressed: () {
+                                                      },
+                                                      child: Text("Eliminar",
+                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+
+                                              ]
+                                          )
+                                      ),
+                                    )
+                                  ]
+                              )
+                          )
+                      ),
+
+                    ),
+                  ),
+
+                   Padding(
+                          padding:  const EdgeInsets.fromLTRB(0,0,0,15),
+                          child: Container(
+                              child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                        child:Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(90,10,0,0),
+                                                  alignment: Alignment.centerLeft,
+                                                  child:Text("Total:",style: TextStyle(fontSize: 25, color: Colors.grey[900], fontWeight: FontWeight.bold))
+                                              ),
+                                              Container(
+                                                  padding:  const EdgeInsets.fromLTRB(100,8,0,0),
+                                                  alignment: Alignment.topCenter,
+
+                                                  child:Text("\$ 1,014.97‬",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                              ),
+                                            ]
+                                        )
+                                    ),
+                                  ]
+                              )
+                          )
+                      ),
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
                     child: Material(  //Wrap with Material
                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
                       elevation: 18.0,
@@ -342,11 +371,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: new Text('Pagar',
                             style: new TextStyle(fontSize: 35.0, color: Colors.white)),
                         onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ConfirmaP()),
+                          );
                         },
                       ),
                     ),
                   ),
-        Padding(
+                  Padding(
             padding: EdgeInsets.all(10),
         )
 
