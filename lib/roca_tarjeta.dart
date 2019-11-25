@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'roca_modelo.dart';
+import 'roca_detalle.dart';
 final naranja = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40, 52, 150, 1);
 class RoCard extends StatefulWidget {
@@ -19,22 +20,41 @@ class _RoCardState extends State<RoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        height: 115.0,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              left: 50.0,
-              child: RoCard,
-            ),
-            Positioned(top: 7.5, child: RocaImagen),
-          ],
+    return InkWell(
+      onTap: showRockDetailPage,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Container(
+          height: 115.0,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                left: 50.0,
+                child: RoCard,
+              ),
+              Positioned(top: 7.5, child: RocaImagen),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  showRockDetailPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return RockDetailPage(roca);
+        },
+      ),
+    );
+  }
+  /*
+
+  @override
+
+
+   */
 
   Widget get RoCard {
     // A new container
@@ -43,8 +63,8 @@ class _RoCardState extends State<RoCard> {
       width: 290.0,
       height: 115.0,
       child: Card(
-        color: Colors.white60,
-        // Wrap children in a Padding widget in order to give padding.
+        color: Colors.indigoAccent,
+        // Wrap children in a Padding widget in order to give padding. 1281
         child: Padding(
           // The class that controls padding is called 'EdgeInsets'
           // The EdgeInsets.only constructor is used to set
@@ -74,10 +94,10 @@ class _RoCardState extends State<RoCard> {
               Row(
                 children: <Widget>[
                   Icon(
-                    Icons.star,color: naranja,
+                    Icons.star,color: Colors.amber,
                   ),
                   Text(': ${widget.roca.rating} / 10',
-                      style: TextStyle(color: naranja, fontWeight: FontWeight.bold))
+                      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold))
                 ],
               )
             ],
@@ -86,22 +106,28 @@ class _RoCardState extends State<RoCard> {
       ),
     );
   }
-}
 
-String renderUrl;
+  String renderUrl;
 
-Widget get RocaImagen {
-  return Container(
-    width: 100.0,
-    height: 100.0,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      image: DecorationImage(
-        fit: BoxFit.cover,
-        image: NetworkImage(
-          'http://lorempixel.com/200/200/cats',
+
+  Widget get RocaImagen {
+    renderUrl = widget.roca.imagen;
+    print("valor ::: ${renderUrl}");
+    return Container(
+      width: 100.0,
+      height: 100.0,
+      child: Image.asset(
+      renderUrl,
+    ),/*CircleAvatar(
+      radius: 300,backgroundColor: Colors.transparent,
+      child: ClipOval(
+        child: Image.asset(
+          renderUrl,
         ),
       ),
-    ),
-  );
+    ),*/
+    );
+  }
 }
+
+

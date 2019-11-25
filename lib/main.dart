@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Icons.mail_outline,
             color: naranja2, // 40, 52, 150 azul ----- 255, 173, 65 naranja
           ),
-          hintStyle: TextStyle(color: naranja),
+          hintStyle: TextStyle(color: naranja2),
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           labelText: "Password",
-          hintStyle: TextStyle(color: naranja),
+          hintStyle: TextStyle(color: naranja2),
           prefixIcon: Icon(
             Icons.vpn_key,
             color: naranja2,

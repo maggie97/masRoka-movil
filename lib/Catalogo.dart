@@ -4,7 +4,7 @@ import 'roca_lista.dart';
 import 'Drawer.dart';
 
 void main() => runApp(Catalogo());
-final naranja = new Color.fromRGBO(255, 73, 65, 1);
+final naranja = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40, 52, 150, 1);
 
 class Catalogo extends StatelessWidget {
@@ -35,13 +35,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Roca> initialRocks = []
-    ..add(Roca('Ruby', 'Facultad de Ingenieria, UASLP',
-        'Ruby es una roca que ha estado en la Facultad de Ingenieria, es una roca muy inteligente'))
-    ..add(Roca('Rex', 'Parque de Morales, SLP', 'Rex es una roca sedentaria.'))
+    ..add(Roca('Ruby', 'Engrane de la Facultad de Ingenieria, UASLP',
+        'Ruby es una roca que ha estado en la Facultad de Ingeniería, es una roca muy inteligente, de hecho, tiene una maestría en Rocas de la Información...',"images/roca1.jpg",130.00))
+    ..add(Roca('Rex', 'Parque de Morales, San Luis Potosí', 'Rex es una roca sedentaria, le fascina correr por la mañana con los visitantes del parque, a veces, Rex sufre bullying por parte de las mascotas :(.',"images/roca2.jpg",85.50))
     ..add(Roca('Rod', 'Springfield',
-        'Rod es una estrella de la televisión, se escapó de Los Simpsons para convertirse en una roca.'))
-    ..add(Roca('Herbert', '¿?', 'Herbert es una roca extraña, de hecho, sospechamos que no es una roca sino un bollillo viejo y duro...'))
-    ..add(Roca('Rocky', 'Fondo de Bikini', 'Rocky es la mascota oficial de +Roca, simplemente la más simple pero la más valiosa'));
+        'Rod es una estrella de la televisión, se escapó de Los Simpsons para convertirse en una roca... Mentira! Nadie dejaría los Simpsons, pero apoco no te la creíste :v',"images/roca3.jpg",114.99))
+    ..add(Roca('Herbert', '¿?', 'Herbert es una roca extraña, de hecho, sospechamos que no es una roca sino un bolsillo viejo y duro...',"images/roca4.jpg",99.99))
+    ..add(Roca('Rocky', 'Fondo de Bikini', 'Rocky es la mascota oficial de +Roca, en realidad es la más simple pero la más valiosa',"images/roca5.jpg",499.99));
 
   TextStyle style = TextStyle(
       //fontFamily: 'Montserrat',
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: azul,
+    return Scaffold(backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Catalogo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           backgroundColor: azul,

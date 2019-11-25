@@ -1,4 +1,4 @@
-#Tue Nov 19 16:52:56 CST 2019
+#Thu Nov 21 17:44:37 CST 2019
 base.0=F\:\\Backup\\UASLP\\Ubicua\\Proyecto\\masRoka-movil\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex
