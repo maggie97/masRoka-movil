@@ -1,0 +1,4 @@
+enum HttpRequest { 
+   get, 
+   post
+}
