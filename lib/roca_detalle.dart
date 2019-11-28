@@ -15,7 +15,7 @@ class RockDetailPage extends StatefulWidget {
 class _RockDetailPageState extends State<RockDetailPage> {
   // Arbitrary size choice for styles
   final double rockAvatarSize = 150.0;
-  double _sliderValue = 10.0;
+  //double _sliderValue = 10.0;
   String renderUrl;
   Widget get rockImage {
     renderUrl = widget.roca.imagen;

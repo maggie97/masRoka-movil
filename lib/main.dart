@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'Registro.dart';
 
 void main() => runApp(MyApp());
 final naranja = new Color.fromRGBO(
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       borderRadius: BorderRadius.circular(30.0),
       color: naranja2,
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width - 100,
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(
             20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
         onPressed: () {
@@ -114,9 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
               context,
               MaterialPageRoute(builder: (context) => Menu()),
             );
-
-            /*mensaje = "Congratulations! You're a f*cking hacker :v";
-            ink = Colors.green;*/
           } else {
             mensaje = "Login failed wrong user credentials";
             ink = Colors.red;
@@ -142,18 +140,14 @@ class _MyHomePageState extends State<MyHomePage> {
       borderRadius: BorderRadius.circular(30.0),
       color: naranja2,
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width - 100,
+        minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(
             20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
         onPressed: () {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Todavia no tengo la parte del registro amigos :'v",
-                textAlign: TextAlign.center,
-                style: style.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-            backgroundColor: Colors.black12,
-            duration: Duration(seconds: 2),
-          ));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Registro()),
+          );
         },
         child: Text("Registrar",
             textAlign: TextAlign.center,

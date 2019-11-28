@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 class Roca {
   final String name;
   final String location;

@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       fontSize: 20.0,
       color: Color.fromRGBO(255, 173, 65, 1));
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  //final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {

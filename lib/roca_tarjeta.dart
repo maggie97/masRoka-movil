@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'roca_modelo.dart';
 import 'roca_detalle.dart';
+
 final naranja = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40, 52, 150, 1);
+
 class RoCard extends StatefulWidget {
   final Roca roca;
 
@@ -32,7 +34,7 @@ class _RoCardState extends State<RoCard> {
                 left: 50.0,
                 child: RoCard,
               ),
-              Positioned(top: 7.5, child: RocaImagen),
+              Positioned(top: 20.0, child: RocaImagen),
             ],
           ),
         ),
@@ -88,16 +90,20 @@ class _RoCardState extends State<RoCard> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(widget.roca.name,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               Text(widget.roca.location,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               Row(
                 children: <Widget>[
                   Icon(
-                    Icons.star,color: Colors.amber,
+                    Icons.star,
+                    color: Colors.amber,
                   ),
                   Text(': ${widget.roca.rating} / 10',
-                      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold))
+                      style: TextStyle(
+                          color: Colors.amber, fontWeight: FontWeight.bold))
                 ],
               )
             ],
@@ -109,25 +115,16 @@ class _RoCardState extends State<RoCard> {
 
   String renderUrl;
 
-
   Widget get RocaImagen {
     renderUrl = widget.roca.imagen;
     print("valor ::: ${renderUrl}");
     return Container(
-      width: 100.0,
-      height: 100.0,
-      child: Image.asset(
-      renderUrl,
-    ),/*CircleAvatar(
-      radius: 300,backgroundColor: Colors.transparent,
-      child: ClipOval(
-        child: Image.asset(
-          renderUrl,
-        ),
-      ),
-    ),*/
-    );
+        width: 100,
+        //height: 100,
+        //padding: EdgeInsets.all(30.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image.asset(renderUrl),
+        ));
   }
 }
-
-
