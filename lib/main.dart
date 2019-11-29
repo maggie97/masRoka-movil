@@ -115,9 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
               context,
               MaterialPageRoute(builder: (context) => Menu()),
             );
-
-            mensaje = "Congratulations! You're a f*cking hacker :v";
-            ink = Colors.green;
           } else {
             mensaje = "Login failed wrong user credentials";
             ink = Colors.red;

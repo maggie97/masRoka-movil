@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #Fri Nov 29 17:14:42 CST 2019
 =======
 #Sat Nov 09 12:10:39 CST 2019
@@ -19,6 +20,9 @@
 =======
 #Sat Nov 23 11:42:11 CST 2019
 >>>>>>> Confirmar Compra
+=======
+#Fri Nov 29 17:14:42 CST 2019
+>>>>>>> TodaApp
 base.0=C\:\\Users\\Control\\Documents\\GitHub\\masRoka-movil\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex

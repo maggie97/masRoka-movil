@@ -160,7 +160,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   //MaterialPageRoute(builder: (context) => AgregaTarjeta()
                                                   //                                                )
                                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AgregaTarjeta()));
-                                                  dropdownValue = '************0990';
                                                 }
                                               },
                                               items: <String>['************0990', '************2901', '************1120', 'Agregar ....']
@@ -215,4 +214,5 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Cajon(),
     );
   }
+
 }

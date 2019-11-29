@@ -95,15 +95,17 @@ class Cajon extends StatelessWidget {
             onTap: () {
             },
           ),
-          ListTile(
-            leading: Icon(Icons.settings,color: Colors.white,size: 30,),
-            title: Text('Preferencias',
-              style: style,
-              textAlign: TextAlign.left,),
-            onTap: () {
-
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.settings,color: Colors.white,size: 30,),
+          //   title: Text('Metodos de Pago',
+          //     style: style,
+          //     textAlign: TextAlign.left,),
+          //   onTap: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(builder: (context) => Metodos()),
+          //     );
+          //   },
+          // ),
 
           ListTile(
             leading: Icon(Icons.close,color: Colors.white,size: 30,),
