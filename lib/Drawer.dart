@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mas_roca/main.dart';
 import 'home.dart';
+import 'package:mas_roca/Agregar Metodos de Pago.dart';
+import 'package:flutter/material.dart';
+import 'package:mas_roca/Catalogo.dart';
+import 'Perfil.dart';
 class Cajon extends StatelessWidget {
 
   Cajon();
@@ -28,7 +33,10 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Perfil()),
+              );
             },
           ),
 
@@ -53,33 +61,23 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Catalogo()),
+              );
 
             },
           ),
 
-
-
-          ListTile(
-            title: Text('             Accesorios',
-              style: style,
-              textAlign: TextAlign.left,),
-            onTap: () {
-            },
-          ),
-          ListTile(
-            title: Text('             Rocas',
-              style: style,
-              textAlign: TextAlign.left,),
-            onTap: () {
-            },
-          ),
           ListTile(
             leading: Icon(Icons.settings,color: Colors.white,size: 30,),
-            title: Text('Preferencias',
+            title: Text('Metodos de Pago',
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Metodos()),
+              );
             },
           ),
 
@@ -89,7 +87,7 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-
+              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => MyApp()));
             },
           ),
 

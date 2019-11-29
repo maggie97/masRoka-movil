@@ -371,8 +371,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: new Text('Pagar',
                             style: new TextStyle(fontSize: 35.0, color: Colors.white)),
                         onPressed: () {
-                          Navigator.push(
-                            context,
+                          Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) => ConfirmaP()),
                           );
                         },

@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 150.0,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      Navigator.of(context).push( MaterialPageRoute(builder: (_) {
                         return DetailScreen2(
                           ruta:
                           "images/roca2.jpg",
@@ -182,8 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
         drawer: Cajon(),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(
-              context,
+            Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => Carrito()),
             );
           },
