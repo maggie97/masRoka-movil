@@ -1,18 +1,16 @@
 import 'package:http/http.dart' as http;
 import 'package:mas_roca/HTTPRequestConvertible.dart';
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:mas_roca/User.dart';
 
 import 'HttpRequest.dart';
 
 class NetworkLayer{
 // ,{Map<String, String> headers, dynamic body} String url, HttpRequest typeRequest,
-    static request(HTTPRequestConvertible urlRequest, Function success) async {
+    static request(HTTPRequestConvertible urlRequest, Function success(http.Response response)) async {
       if(urlRequest.typeRequest == HttpRequest.get){
         //final http.Response response = await requestGet( url );
         requestGet(urlRequest.url).then((response){
+          print('get');
           success(response);
         });
       }
@@ -24,6 +22,7 @@ class NetworkLayer{
       }
     }
     static Future<http.Response> requestGet(String url) async {
+      print('reques $url');
       return http.get(url);
     }
     static Future<http.Response> requestPost(String url, {Map<String, String> headers, dynamic body}){
@@ -31,7 +30,5 @@ class NetworkLayer{
       return http.post(url,
         headers: headers, 
         body: body); 
-      // {'Content-Type' : 'application/json'}
-      // '{ "email": "maggie@hotmail.com", "name": "maggie", "password": "123456789" }'
     }
 }

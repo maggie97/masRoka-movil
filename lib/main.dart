@@ -125,10 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
           } else if (cpEmail.isEmpty && cpPass.isNotEmpty) {
             mensaje = "The email field can't be empty";
           } else 
-          // if (cpEmail == cpPass && cpEmail == "admin") 
           {
             mensaje = "";
-            //TODO: implements the login correctly
             print('send');
             ServiceAuth.login(cpEmail, cpPass, (statusCode){
               print('object');

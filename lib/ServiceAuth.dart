@@ -10,10 +10,6 @@ class ServiceAuth{
         print(response.statusCode);
         completion(response.statusCode);
       });
-      // var url = AuthRouter.loginURL(user, name, password);
-      // var response  = NetworkLayer.requestPost(url.url, headers: {'Content-Type' : 'application/json'}, 
-      // body: '{ "email": "$user", "name": "$name", "password": "$password" }');
-      // print(response);
     }
 }
 class AuthRouter{

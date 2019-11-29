@@ -12,4 +12,5 @@ class HTTPRequestConvertible {
 
 class URL {
   static String heroku = 'http://masrocka.herokuapp.com';
+  static String local = 'http://localhost:8000';
 }
