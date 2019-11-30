@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mas_roca/ServiceAuth.dart';
+import 'HttpRequest.dart';
 import 'home.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:mas_roca/NetworkLayer.dart';
+import 'package:mas_roca/User.dart';
 void main() => runApp(MyApp());
 final naranja = new Color.fromRGBO(255,73,65,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
 final azul = new Color.fromRGBO(40,52,150,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future<User> user;
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 20.0,
@@ -38,6 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final email = TextEditingController();
   final contrasenia = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   void dispose() {
     email.dispose();
@@ -97,6 +109,11 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.fromLTRB(
             20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
         onPressed: () {
+          
+          // var url = 'https://masrocka.herokuapp.com/api/User';
+          // NetworkLayer.request(url , HttpRequest.post , (response){
+          //   print('${response.statusCode}');
+          // });
           String cpPass = contrasenia.text;
           String cpEmail = email.text;
           Color ink = Colors.amber;
@@ -107,19 +124,26 @@ class _MyHomePageState extends State<MyHomePage> {
             mensaje = "The password field can't be empty";
           } else if (cpEmail.isEmpty && cpPass.isNotEmpty) {
             mensaje = "The email field can't be empty";
-          } else if (cpEmail == cpPass && cpEmail == "admin") {
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Menu()),
-            );
-
-            mensaje = "Congratulations! You're a f*cking hacker :v";
+          } else 
+          {
+            mensaje = "";
+            print('send');
+            ServiceAuth.login(cpEmail, cpPass, (statusCode){
+              print('object');
+              if (statusCode > 400){
+                mensaje = "Login failed wrong user credentials";
+                ink = Colors.red;
+                return;
+              }
+              mensaje = "Congratulations! You're a f*cking hacker :v";
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Menu()),
+              );
+            });
             ink = Colors.green;
-          } else {
-            mensaje = "Login failed wrong user credentials";
-            ink = Colors.red;
-          }
+
+          } 
           _scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text(mensaje,
                 textAlign: TextAlign.center,
@@ -177,12 +201,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 4,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                   child: CircleAvatar(
                     radius: 300,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Colors.orange,
                     child: ClipOval(
                       child: Image.network(
                         "https://picsum.photos/300/300?nature",
