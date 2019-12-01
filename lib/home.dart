@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'Carrito.dart';
 import 'Detalles.dart';
 import 'Product.dart';
-import 'ServiceProduct.dart';
+import 'Network/ServiceProduct.dart';
 class Menu extends StatelessWidget {
   // This widget is the root of your application.
 
@@ -35,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
-  Widget listProducts;
+  // Widget listProducts;
+
   @override
   initState() {
     super.initState();
@@ -137,65 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     : Center(child: CircularProgressIndicator());
               },
             )
-            
-            // ListView(
-            //   scrollDirection: Axis.horizontal,
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: EdgeInsets.all(10.0),
-            //     ),
-            //     new GestureDetector(
-            //         child: PhotoHero(
-            //           tag: "Rocaa",
-            //           ruta: "images/roca2.jpg",
-            //           width: 150.0,
-            //         ),
-            //         onTap: () {
-            //           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            //             return DetailScreen2(
-            //               ruta:
-            //               "images/roca2.jpg",
-            //               descripcion: "Familia de Rocas ROCKPET",
-            //               precio: '999',
-            //               caracteris: "Linda Familia de rocas unica y especial",
-            //             );
-            //           }));
-            //         }),
-            //     Padding(
-            //       padding: EdgeInsets.all(5.0),
-            //     ),
-            //     new GestureDetector(
-            //         child: PhotoHero(
-            //           tag: "123454",
-            //           ruta: "images/roca1.jpg",
-            //           width: 150.0,
-            //         ),
-            //         onTap: () {}),
-            //     Padding(
-            //       padding: EdgeInsets.all(5.0),
-            //     ),
-            //     new GestureDetector(
-            //         child: PhotoHero(
-            //           tag: "Roca",
-            //           ruta: "images/roca2.jpg",
-            //           width: 150.0,
-            //         ),
-            //         onTap: () {}),
-            //     Padding(
-            //       padding: EdgeInsets.all(5.0),
-            //     ),
-            //     new GestureDetector(
-            //         child: PhotoHero(
-            //           tag: "Roca4",
-            //           ruta: "images/roca1.jpg",
-            //           width: 150.0,
-            //         ),
-            //         onTap: () {}),
-            //     Padding(
-            //       padding: EdgeInsets.all(5.0),
-            //     )
-            //   ],
-            // ),
           ),
         ]))),
         drawer: Cajon(),
@@ -218,9 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 class PhotosList extends StatelessWidget {
   final List<Product> photos;
-  final String route = "images/roca1.jpg";
+  final String route;
 
-  PhotosList({Key key, this.photos}) : super(key: key);
+  PhotosList({Key key, this.photos, this.route}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +173,7 @@ class PhotosList extends StatelessWidget {
       ),
       itemCount: photos.length,
       itemBuilder: (context, index) {
+        print(photos[index].routeImg);
         return  GestureDetector(
           child: PhotoHero(
             tag: photos[index].name,
@@ -244,7 +187,7 @@ class PhotosList extends StatelessWidget {
   }
   String guardImagen(String route){
     if(route == null){
-      return "placeholder.jpg";
+      return "images/placeholder.jpg";
     }
     return route;
   }

@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
-import 'package:mas_roca/HttpRequest.dart';
-import 'package:mas_roca/NetworkLayer.dart';
+import 'HttpRequest.dart';
+import 'NetworkLayer.dart';
 
 import 'HTTPRequestConvertible.dart';
-import 'Product.dart';
+import '../Product.dart';
 
 class ServiceProduct{
     static Future<List<Product>> getProducts() async {
@@ -23,6 +22,6 @@ class ServiceProduct{
 }
 class ProductRouter{
   static HTTPRequestConvertible getProducts(){
-    return HTTPRequestConvertible(URL.local + '/api/Producto' , HttpRequest.get );
+    return HTTPRequestConvertible(URL.local + '/Producto' , HttpRequest.get );
   }
 }

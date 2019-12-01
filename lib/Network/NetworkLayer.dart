@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:mas_roca/HTTPRequestConvertible.dart';
+import 'HTTPRequestConvertible.dart';
 import 'dart:async';
 
 import 'HttpRequest.dart';

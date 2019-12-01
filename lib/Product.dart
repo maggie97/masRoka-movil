@@ -11,7 +11,7 @@ class Product{
     return Product(
       productId: json['id'] as int,
       name: json['nombre'] as String,
-      routeImg: json['title'] as String,
+      routeImg: json['path'] as String,
       existences: json['existences'] as int
     );
   }

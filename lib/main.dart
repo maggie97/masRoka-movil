@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mas_roca/ServiceAuth.dart';
-import 'HttpRequest.dart';
+import 'Network/ServiceAuth.dart';
+import 'Registro.dart';
 import 'home.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:mas_roca/NetworkLayer.dart';
 import 'package:mas_roca/User.dart';
 void main() => runApp(MyApp());
 final naranja = new Color.fromRGBO(255,73,65,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
+final naranja2 = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40,52,150,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -46,10 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final email = TextEditingController();
   final contrasenia = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-  }
+
   @override
   void dispose() {
     email.dispose();
@@ -73,10 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
           labelText: "Email",
           prefixIcon: Icon(
             Icons.mail_outline,
-            color: naranja, // 40, 52, 150 azul ----- 255, 173, 65 naranja
+            color: naranja2, // 40, 52, 150 azul ----- 255, 173, 65 naranja
           ),
 
-          hintStyle: TextStyle(color: naranja),
+          hintStyle: TextStyle(color: naranja2),
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -91,10 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           labelText: "Password",
-          hintStyle: TextStyle(color: naranja),
+          hintStyle: TextStyle(color: naranja2),
           prefixIcon: Icon(
             Icons.vpn_key,
-            color: naranja,
+            color: naranja2,
           ),
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -103,55 +99,37 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: naranja,
+      color: naranja2,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width-100,
         padding: EdgeInsets.fromLTRB(
             20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
         onPressed: () {
-          
-          // var url = 'https://masrocka.herokuapp.com/api/User';
-          // NetworkLayer.request(url , HttpRequest.post , (response){
-          //   print('${response.statusCode}');
-          // });
           String cpPass = contrasenia.text;
           String cpEmail = email.text;
           Color ink = Colors.amber;
           String mensaje;
           if (cpEmail.isEmpty && cpPass.isEmpty) {
-            mensaje = "Please enter a valid information!";
+            scafoldShow("Please enter a valid information!", ink);
           } else if (cpPass.isEmpty && cpEmail.isNotEmpty) {
-            mensaje = "The password field can't be empty";
+            scafoldShow("The password field can't be empty", ink);
           } else if (cpEmail.isEmpty && cpPass.isNotEmpty) {
-            mensaje = "The email field can't be empty";
+            scafoldShow("The email field can't be empty", ink);
           } else 
           {
-            mensaje = "";
             print('send');
             ServiceAuth.login(cpEmail, cpPass, (statusCode){
               print('object');
               if (statusCode > 400){
-                mensaje = "Login failed wrong user credentials";
-                ink = Colors.red;
+                scafoldShow("Login failed wrong user credentials", Colors.red);
                 return;
               }
-              mensaje = "Congratulations! You're a f*cking hacker :v";
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Menu()),
               );
             });
-            ink = Colors.green;
-
           } 
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(mensaje,
-                textAlign: TextAlign.center,
-                style: style.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-            backgroundColor: ink,
-            duration: Duration(seconds: 2),
-          ));
         },
         child: Text("Acceder",
             textAlign: TextAlign.center,
@@ -164,20 +142,16 @@ class _MyHomePageState extends State<MyHomePage> {
     final registrarButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: naranja,
+      color: naranja2,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width-100,
         padding: EdgeInsets.fromLTRB(
             20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
         onPressed: () {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Todavia no tengo la parte del registro amigos :'v",
-                textAlign: TextAlign.center,
-                style: style.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-            backgroundColor: Colors.black12,
-            duration: Duration(seconds: 2),
-          ));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Registro()),
+          );
         },
         child: Text("Registrar",
             textAlign: TextAlign.center,
@@ -198,36 +172,21 @@ class _MyHomePageState extends State<MyHomePage> {
             )),*/
         // 40, 52, 150 azul ----- 255, 173, 65 naranja
         body: SingleChildScrollView(
-          child: Column(
+          child: Stack(
+            alignment: Alignment.topCenter,
             children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                  child: CircleAvatar(
-                    radius: 300,
-                    backgroundColor: Colors.orange,
-                    child: ClipOval(
-                      child: Image.network(
-                        "https://picsum.photos/300/300?nature",
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.only(top: 250),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                )
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                color: Color.fromRGBO(255, 255, 255, 0.5),
-                margin: EdgeInsets.all(20),
-                child: Center(
+                  color: Color.fromRGBO(255, 255, 255, 0.5),
+                  margin: EdgeInsets.all(20),
                   child: Padding(
-                    padding:
-                    const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 15.0), //36.0
+                    padding: const EdgeInsets.fromLTRB(
+                        20.0, 80.0, 20.0, 15.0), //36.0
                     child: Column(
-
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -251,9 +210,42 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 60),
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: ShapeDecoration(
+                      shape: CircleBorder(), color: Colors.white),
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: CircleBorder(),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            'https://picsum.photos/300/300?nature',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
 
         ));
+  }
+  scafoldShow(String mensaje, Color ink){
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(mensaje,
+          textAlign: TextAlign.center,
+          style: style.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold)),
+      backgroundColor: ink,
+      duration: Duration(seconds: 2),
+    ));
   }
 }

@@ -1,5 +1,7 @@
+import 'package:mas_roca/Agrega%20Direcci%C3%B3n.dart';
 import 'package:mas_roca/Finalizar%20Compra.dart';
 import 'Drawer.dart';
+import 'Agregar Tarjeta.dart';
 import 'package:flutter/material.dart';
 import 'Carrito.dart';
 class ConfirmaP extends StatelessWidget {
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       title:Text("Ignacio Manuel Altamirano #450 Fraccionamiento Las Norias San Luis Potosi, SLP CP: 78143",
                                         style: TextStyle(fontSize: 15.0),textAlign: TextAlign.left,),
                                       onTap: (){
-
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AgregaDirec()));
                                       },
                                     )
                                   ]
@@ -155,7 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   dropdownValue = newValue;
                                                 });
                                                 if(newValue == 'Agregar ....'){
-                                                  dropdownValue = '************0990';
+                                                  //MaterialPageRoute(builder: (context) => AgregaTarjeta()
+                                                  //                                                )
+                                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AgregaTarjeta()));
                                                 }
                                               },
                                               items: <String>['************0990', '************2901', '************1120', 'Agregar ....']
@@ -210,4 +214,5 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Cajon(),
     );
   }
+
 }
