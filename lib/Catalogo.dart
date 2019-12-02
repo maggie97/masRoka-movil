@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mas_roca/roca_tarjeta.dart';
+import 'Product.dart';
 import 'roca_modelo.dart';
 import 'roca_lista.dart';
 import 'Drawer.dart';
@@ -34,14 +37,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Roca> initialRocks = []
-    ..add(Roca('Ruby', 'Engrane de la Facultad de Ingenieria, UASLP',
-        'Ruby es una roca que ha estado en la Facultad de Ingeniería, es una roca muy inteligente, de hecho, tiene una maestría en Rocas de la Información...',"images/roca1.jpg",130.00))
-    ..add(Roca('Rex', 'Parque de Morales, San Luis Potosí', 'Rex es una roca sedentaria, le fascina correr por la mañana con los visitantes del parque, a veces, Rex sufre bullying por parte de las mascotas :(.',"images/roca2.jpg",85.50))
-    ..add(Roca('Rod', 'Springfield',
-        'Rod es una estrella de la televisión, se escapó de Los Simpsons para convertirse en una roca... Mentira! Nadie dejaría los Simpsons, pero apoco no te la creíste :v',"images/roca3.jpg",114.99))
-    ..add(Roca('Herbert', '¿?', 'Herbert es una roca extraña, de hecho, sospechamos que no es una roca sino un bolsillo viejo y duro...',"images/roca4.jpg",99.99))
-    ..add(Roca('Rocky', 'Fondo de Bikini', 'Rocky es la mascota oficial de +Roca, en realidad es la más simple pero la más valiosa',"images/roca5.jpg",499.99));
+  // List<Roca> initialRocks = []
+  //   ..add(Roca('Ruby', 'Engrane de la Facultad de Ingenieria, UASLP',
+  //       'Ruby es una roca que ha estado en la Facultad de Ingeniería, es una roca muy inteligente, de hecho, tiene una maestría en Rocas de la Información...',"images/roca1.jpg",130.00))
+  //   ..add(Roca('Rex', 'Parque de Morales, San Luis Potosí', 'Rex es una roca sedentaria, le fascina correr por la mañana con los visitantes del parque, a veces, Rex sufre bullying por parte de las mascotas :(.',"images/roca2.jpg",85.50))
+  //   ..add(Roca('Rod', 'Springfield',
+  //       'Rod es una estrella de la televisión, se escapó de Los Simpsons para convertirse en una roca... Mentira! Nadie dejaría los Simpsons, pero apoco no te la creíste :v',"images/roca3.jpg",114.99))
+  //   ..add(Roca('Herbert', '¿?', 'Herbert es una roca extraña, de hecho, sospechamos que no es una roca sino un bolsillo viejo y duro...',"images/roca4.jpg",99.99))
+  //   ..add(Roca('Rocky', 'Fondo de Bikini', 'Rocky es la mascota oficial de +Roca, en realidad es la más simple pero la más valiosa',"images/roca5.jpg",499.99));
 
   TextStyle style = TextStyle(
       //fontFamily: 'Montserrat',
@@ -56,6 +59,33 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState(){
+    super.initState();
+    
+  }
+
+  listProducts(){
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Productos').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return new Text('Loading...');
+          default:
+            return ListView(
+              children: snapshot.data.documents
+                  .map((DocumentSnapshot document) {
+                print(Product.fromSnapshot(document));
+                return RoCard(Product.fromSnapshot(document));
+              }).toList()
+            );
+        }
+      },
+    );
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(backgroundColor: Colors.white,
         appBar: AppBar(
@@ -66,8 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // Remove the DogCard Widget.
         // Instead, use your new DogList Class,
         // Pass in the mock data from the list above.
-        child: Center( // Changed code
-          child: RocaList(initialRocks), // Changed code
+        child: Center( 
+          child: listProducts()
+          // RocaList(listProducts()), 
         ),
       ),
         drawer: Cajon()

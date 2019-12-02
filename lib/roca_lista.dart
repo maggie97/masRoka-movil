@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mas_roca/Product.dart';
 
 import 'roca_tarjeta.dart';
 import 'roca_modelo.dart';
 
 class RocaList extends StatelessWidget {
   // Builder methods rely on a set of data, such as a list.
-  final List<Roca> rocas;
+  final List<Product> rocas;
   RocaList(this.rocas);
 
   // First, make your build method like normal.
@@ -13,6 +14,7 @@ class RocaList extends StatelessWidget {
   // Don't forget to pass in the context!
   @override
   Widget build(BuildContext context) {
+    print(rocas);
     return _buildList(context);
   }
 
@@ -29,6 +31,8 @@ class RocaList extends StatelessWidget {
       // A callback that will return a widget.
       itemBuilder: (context, int) {
         // In our case, a DogCard for each doggo.
+        print('roca_list.dart');
+        print('Nombre: ${rocas[int]}, ');
         return RoCard(rocas[int]);
       },
     );

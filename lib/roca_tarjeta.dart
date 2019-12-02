@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'Product.dart';
 import 'roca_modelo.dart';
 import 'roca_detalle.dart';
 
@@ -7,18 +8,18 @@ final naranja = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40, 52, 150, 1);
 
 class RoCard extends StatefulWidget {
-  final Roca roca;
+  final Product roca;
 
   RoCard(this.roca);
 
   @override
-  _RoCardState createState() => _RoCardState(roca);
+  _RoCardState createState() => _RoCardState();
 }
 
 class _RoCardState extends State<RoCard> {
-  Roca roca;
+  // Roca roca;
 
-  _RoCardState(this.roca);
+  _RoCardState();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class _RoCardState extends State<RoCard> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return RockDetailPage(roca);
+          return RockDetailPage(widget.roca);
         },
       ),
     );
@@ -59,6 +60,7 @@ class _RoCardState extends State<RoCard> {
    */
 
   Widget get RoCard {
+    print('inside');
     // A new container
     // The height and width are arbitrary numbers for styling.
     return Container(
@@ -92,20 +94,20 @@ class _RoCardState extends State<RoCard> {
               Text(widget.roca.name,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold)),
-              Text(widget.roca.location,
+              Text(widget.roca.locacion,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold)),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  Text(': ${widget.roca.rating} / 10',
-                      style: TextStyle(
-                          color: Colors.amber, fontWeight: FontWeight.bold))
-                ],
-              )
+              // Row(
+              //   children: <Widget>[
+              //     Icon(
+              //       Icons.star,
+              //       color: Colors.amber,
+              //     ),
+              //     Text(': ${widget.roca.rating} / 10',
+              //         style: TextStyle(
+              //             color: Colors.amber, fontWeight: FontWeight.bold))
+              //   ],
+              // )
             ],
           ),
         ),
@@ -116,7 +118,7 @@ class _RoCardState extends State<RoCard> {
   String renderUrl;
 
   Widget get RocaImagen {
-    renderUrl = widget.roca.imagen;
+    renderUrl = widget.roca.routeImg;
     print("valor ::: ${renderUrl}");
     return Container(
         width: 100,

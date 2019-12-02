@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   getCardListFirebase(),
                   // Button_CornerRadius(text: 'Button',color: Colors.red),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(0.0, 5, 0.0, 0.0),
                     child: Material(  //Wrap with Material
                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
                       elevation: 18.0,
@@ -118,7 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
             : Center(child: CircularProgressIndicator());
       },
     );
-    
   }
   getCardListFirebase(){
     print('holi');
@@ -139,19 +138,22 @@ class _MyHomePageState extends State<MyHomePage> {
             if(snapshot.data.documents.length == 0){
               return Text('No hay tarjetas');
             } else {
-              return GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                ),
-                shrinkWrap: true,
-                children: snapshot.data.documents.map((DocumentSnapshot document) {
-                  // print(document.documentID);
-                  print('aquimero');
-                  return 
-                    CustomCard(
-                      tarjeta: Tarjeta.fromSnapshot(document),
-                    );
-                }).toList()
+              return Container(
+                height: MediaQuery.of(context).size.height - 220,
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                  ),
+                  shrinkWrap: true,
+                  children: snapshot.data.documents.map((DocumentSnapshot document) {
+                    // print(document.documentID);
+                    print('aquimero');
+                    return 
+                      CustomCard(
+                        tarjeta: Tarjeta.fromSnapshot(document),
+                      );
+                  }).toList()
+                )
               );
             }
         }
@@ -198,7 +200,7 @@ class CustomCard extends StatelessWidget {
       width: width,
       child: 
       Padding(
-        padding: EdgeInsets.all(0.0),
+        padding: EdgeInsets.all(10.0),
         child: Container(
           height: 100,
           width: double.infinity,

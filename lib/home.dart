@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mas_roca/roca_detalle.dart';
 
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
@@ -211,8 +212,6 @@ class PhotosList extends StatelessWidget {
         return  GestureDetector(
           child: PhotoHero(
             product: photos[index],
-            // tag: photos[index].name,
-            // ruta:  guardImagen(photos[index].routeImg),
             width: 150.0,
           ),
           onTap: () {}
@@ -256,7 +255,10 @@ class PhotoHero extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap,
+            onTap: () => Navigator.of(context).push( MaterialPageRoute( builder: (context) {
+                  return RockDetailPage(product);
+                },),
+            ),
             child: Image.asset(ruta),
           ),
         ),

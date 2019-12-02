@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mas_roca/Network/ServiceCarrito.dart';
+import 'package:mas_roca/Product.dart';
 
+import 'Carrito.dart';
 import 'roca_modelo.dart';
 final azul = new Color.fromRGBO(40, 52, 150, 1);
 final naranja = new Color.fromRGBO(255, 145, 0, 1);
 class RockDetailPage extends StatefulWidget {
-  final Roca roca;
+  final Product roca;
 
   RockDetailPage(this.roca);
 
@@ -18,7 +21,7 @@ class _RockDetailPageState extends State<RockDetailPage> {
   //double _sliderValue = 10.0;
   String renderUrl;
   Widget get rockImage {
-    renderUrl = widget.roca.imagen;
+    renderUrl = widget.roca.routeImg;
     // Containers define the size of its children.
     return Image.asset(renderUrl);/*Container(
       height: rockAvatarSize,
@@ -48,8 +51,8 @@ class _RockDetailPageState extends State<RockDetailPage> {
           color: naranja,
           size: 40.0,
         ),
-        Text(' ${widget.roca.rating} / 10',
-            style: TextStyle(color: naranja,fontSize: 40),),
+        // Text(' ${widget.roca.rating} / 10',
+        //     style: TextStyle(color: naranja,fontSize: 40),),
       ],
     );
   }
@@ -92,10 +95,10 @@ class _RockDetailPageState extends State<RockDetailPage> {
                 style: TextStyle(fontSize: 32.0, color: naranja),
               ),
               Text(
-                widget.roca.location,
+                widget.roca.locacion,
                 style: TextStyle(fontSize: 15.0, color: Colors.grey[800]),
               ),
-              Text(widget.roca.description, style: TextStyle(color: Colors.grey[800], fontSize: 20.0),textAlign: TextAlign.justify,),
+              Text(widget.roca.descripcion, style: TextStyle(color: Colors.grey[800], fontSize: 20.0),textAlign: TextAlign.justify,),
               /*Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
@@ -105,7 +108,31 @@ class _RockDetailPageState extends State<RockDetailPage> {
                 widget.roca.precio.toString(),
                 style: TextStyle(fontSize: 35.0, color: Colors.blue[800]),
               ),
-              rating
+              rating,
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                child: Material(  //Wrap with Material
+                  shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                  elevation: 18.0,
+                  color: Color.fromRGBO(255, 173, 65, 1),
+                  clipBehavior: Clip.antiAlias, // Add This
+                  child: MaterialButton(
+                    minWidth: 250.0,
+                    height: 50,
+                    color:  Color.fromRGBO(255, 173, 65, 1),
+                    child: new Text('Agregar al carrito',
+                        style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                    onPressed: () {
+                      ServiceCarrito.agregaProducto(widget.roca.productId, 1, widget.roca.precio);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute( builder: (context) {
+                        return Carrito();
+                        })
+                      );  
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),

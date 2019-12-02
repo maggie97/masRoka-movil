@@ -42,28 +42,28 @@ class DetailScreen2 extends StatelessWidget {
         body: SingleChildScrollView(
             child: Center(
                 child: Column(children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(5.0),
-          ),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                  ),
                   Text(
                     descripcion,
                     style: TextStyle(fontSize: 30.0, color: Color.fromRGBO(255, 173, 65, 1),fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   GestureDetector(
-            child: Center(
-              child: Hero(
-                tag: 'imageHero',
-                child: Image.asset(
-                  ruta,
-                  width: 400.0,
-                ),
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+                    child: Center(
+                      child: Hero(
+                        tag: 'imageHero',
+                        child: Image.asset(
+                          ruta,
+                          width: 400.0,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                   Padding(
                     padding: EdgeInsets.all(10.0),
                   ),
@@ -77,8 +77,6 @@ class DetailScreen2 extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                   ),
-
-
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                     child: Material(  //Wrap with Material

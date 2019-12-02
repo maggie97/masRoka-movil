@@ -88,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Center(
                       child:Container(
-                        //leading: Icon(Icons.shopping_cart,color:Color.fromRGBO(255, 173, 65, 1),size: 40,),
                         child: Text('Agregar Tarjeta',
                           style: TextStyle(fontSize: 35.0, color: Color.fromRGBO(255, 173, 65, 1), fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,),
