@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mas_roca/home.dart';
 
 import 'Drawer.dart';
@@ -269,25 +270,45 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<bool> revisa(String tar, String mes,String fec,String cvv) {
     if (tar != "" && mes != ""&& fec != ""&& cvv != "") {
-      showDialog(
+      try{
+        createRecord(int.parse(cvv), tar, mes + '/'+ fec);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Tarjeta Agregada con Exito'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Regresa'),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Menu()),
+                      );
+                    },
+                  ),
+                ],
+              );
+            }
+        );
+      }
+      catch (exc){
+        return showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Tarjeta Agregada con Exito'),
+              title: Text(exc.toString()),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Regresa'),
+                  child: Text('Regret'),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => Menu()),
-                    );
+                    Navigator.of(context).pop();
                   },
                 ),
               ],
             );
-          }
-      );
+          });
+      }
     } else {
       return showDialog(
           context: context,
@@ -305,5 +326,10 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           });
     }
+  }
+  void createRecord(int cvv, String numero, String fechaVenc) {
+    print('here');
+    Firestore.instance.collection('users').document('maggie@hotmail.com').collection('tarjetas').document()
+      .setData({ 'cvv': cvv, 'numeroTarjeta': numero, 'vencimiento': fechaVenc }, merge: true);
   }
 }

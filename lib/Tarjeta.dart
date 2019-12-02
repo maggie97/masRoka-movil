@@ -1,22 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Tarjeta{
-  final int id;
-  final String idUser;
+  final String id;
   final String numero;
-  final String validacion;
+  final int validacion;
   final String vencimiento;
 
-  const Tarjeta({this.vencimiento, this.id, this.idUser, this.numero, this.validacion});
+  final DocumentReference reference;
+
+  const Tarjeta( {this.vencimiento, this.id, this.numero, this.validacion, this.reference,});
 
 
   factory Tarjeta.fromJson(Map<String, dynamic> json) {
     return Tarjeta(
-      id: json['id'] as int,
-      idUser: json['user_id'] as String,
+      id: json['id'] as String,
       numero: json['numeroTarjeta'] as String,
-      validacion: json['validacion'] as String,
+      validacion: json['validacion'] as int,
       vencimiento: json['vencimiento'] as String
     );
   }
+
+  Tarjeta.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(reference != null), assert(map['numeroTarjeta'] != null),
+        assert(map['cvv'] != null),assert(map['vencimiento'] != null),
+        id = reference.documentID,numero = map['numeroTarjeta'], validacion = map['cvv'], 
+        vencimiento = map['vencimiento'];
+
+  Tarjeta.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
   /* {
         "id": 1,
         "user_id": "1",
