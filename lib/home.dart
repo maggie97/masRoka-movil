@@ -1,11 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
 import 'Carrito.dart';
 import 'Detalles.dart';
+import 'Network/BaseAuth.dart';
+import 'Network/ServiceAuth.dart';
 import 'Product.dart';
 import 'Network/ServiceProduct.dart';
+
 class Menu extends StatelessWidget {
   // This widget is the root of your application.
+  final String userID;
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+
+  const Menu({Key key, this.userID, this.auth, this.logoutCallback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 new GestureDetector(
                     child: PhotoHero(
-                      tag: "Antipulgas",
-                      ruta: "images/Accesorio.jpg",
+                      product: Product(name: "Antipulgas", routeImg: "images/Accesorio.jpg"),
                       width: 150.0,
                     ),
                     onTap: () {}),
@@ -105,8 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 new GestureDetector(
                     child: PhotoHero(
-                      tag: "Cupon",
-                      ruta: "images/roca1.jpg",
+                      product: Product(name: "Cupon", routeImg: "images/roca1.jpg"),
                       width: 150.0,
                     ),
                     onTap: () {}),
@@ -128,16 +136,17 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
           new Container(
             height: 150.0,
-            child: FutureBuilder<List<Product>>(
-              future: ServiceProduct.getProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
-                print(snapshot);
-                return snapshot.hasData
-                    ? PhotosList(photos: snapshot.data)
-                    : Center(child: CircularProgressIndicator());
-              },
-            )
+            child: listProducts()
+            // FutureBuilder<List<Product>>(
+            //   future: ServiceProduct.getProducts(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasError) print(snapshot.error);
+            //     print(snapshot);
+            //     return snapshot.hasData
+            //         ? PhotosList(photos: snapshot.data)
+            //         : Center(child: CircularProgressIndicator());
+            //   },
+            // )
           ),
         ]))),
         drawer: Cajon(),
@@ -157,6 +166,33 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Color.fromRGBO(255, 173, 65, .8),),
     );
   }
+  listProducts(){
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Productos').snapshots(),
+      builder: (context, snapshot) {
+        print(snapshot);
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return new Text('Loading...');
+          default:
+            return GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              children: snapshot.data.documents
+                  .map((DocumentSnapshot document) {
+                return new PhotoHero(
+                  product: Product.fromSnapshot(document),
+                  width: 150,
+                );
+              }).toList()
+            );
+        }
+      },
+    );
+  }
 }
 class PhotosList extends StatelessWidget {
   final List<Product> photos;
@@ -166,18 +202,17 @@ class PhotosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(photos.length);
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
       itemCount: photos.length,
       itemBuilder: (context, index) {
-        print(photos[index].routeImg);
         return  GestureDetector(
           child: PhotoHero(
-            tag: photos[index].name,
-            ruta:  guardImagen(photos[index].routeImg),
+            product: photos[index],
+            // tag: photos[index].name,
+            // ruta:  guardImagen(photos[index].routeImg),
             width: 150.0,
           ),
           onTap: () {}
@@ -194,15 +229,26 @@ class PhotosList extends StatelessWidget {
 }
 class PhotoHero extends StatelessWidget {
   const PhotoHero(
-      {Key key, this.tag, this.photo, this.ruta, this.onTap, this.width})
+      {Key key, this.onTap, this.width, this.product})
       : super(key: key);
-  final String tag;
-  final String photo;
-  final String ruta;
+  
+  //  String tag;
+  //  String ruta;
   final VoidCallback onTap;
   final double width;
+  final Product product;
 
   Widget build(BuildContext context) {
+    print(product.name);
+    if(product == null ) return Text('Imagen No Encntrada');
+    String tag = product.name;
+    String ruta = product.routeImg;
+    if(tag ==null){
+      tag = "yolo";
+    }
+    if(ruta == null){
+      ruta = "images/placeholder.jpg";
+    }
     return SizedBox(
       width: width,
       child: Hero(

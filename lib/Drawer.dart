@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mas_roca/Network/ServiceAuth.dart';
 import 'package:mas_roca/main.dart';
+import 'Network/BaseAuth.dart';
 import 'home.dart';
+import 'RootView.dart';
 import 'package:mas_roca/Agregar Metodos de Pago.dart';
 import 'package:flutter/material.dart';
 import 'package:mas_roca/Catalogo.dart';
 import 'Perfil.dart';
 class Cajon extends StatelessWidget {
+
 
   Cajon();
   TextStyle style = TextStyle(
@@ -88,11 +91,8 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-              ServiceAuth.logout((status){
-                if (status<400){
-                  Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => MyApp()));
-                }
-              });
+              Auth.instance.signOut();
+              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => RootPage()));
             },
           ),
 

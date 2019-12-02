@@ -22,6 +22,6 @@ class ServiceProduct{
 }
 class ProductRouter{
   static HTTPRequestConvertible getProducts(){
-    return HTTPRequestConvertible(URL.local + '/Producto' , HttpRequest.get );
+    return HTTPRequestConvertible(URL.heroku + '/Producto' , HttpRequest.get );
   }
 }

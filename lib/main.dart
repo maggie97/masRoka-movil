@@ -1,16 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mas_roca/Network/BaseAuth.dart';
+import 'package:mas_roca/Network/UserDefaults.dart';
 import 'Network/ServiceAuth.dart';
 import 'Registro.dart';
 import 'home.dart';
+import 'RootView.dart';
 
 import 'package:mas_roca/User.dart';
-void main() => runApp(MyApp());
+void main() => runApp(Inicio());
 final naranja = new Color.fromRGBO(255,73,65,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
 final naranja2 = new Color.fromRGBO(255, 145, 0, 1);
 final azul = new Color.fromRGBO(40,52,150,1); // 40, 52, 150 azul ----- 255, 173, 65 naranja
+
+
+class Inicio extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: 'Flutter login demo',
+        debugShowCheckedModeBanner: false,
+        theme: new ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: new RootPage());
+  }
+}
+
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  
+  final BaseAuth auth;
+  final VoidCallback loginCallback;
+
+  const MyApp({Key key, this.auth, this.loginCallback}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,20 +45,23 @@ class MyApp extends StatelessWidget {
         secondaryHeaderColor: Color.fromRGBO(255, 173, 65, 1),
         backgroundColor: Color.fromRGBO(40, 52, 150, 1),//azul
       ),
-      home: MyHomePage(title: '+Roca Login'),
+      home: MyHomePage(title: '+Roca Login', auth: auth,loginCallback: loginCallback,),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.auth, this.loginCallback}) : super(key: key);
   final String title;
+  final BaseAuth auth;
+  final VoidCallback loginCallback;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _formKey = new GlobalKey<FormState>();
   Future<User> user;
   TextStyle style = TextStyle(
       fontFamily: 'Montserrat',
@@ -45,6 +71,62 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final email = TextEditingController();
   final contrasenia = TextEditingController();
+  
+  bool _isLoginForm;
+  bool _isLoading;
+  // String _email;
+  // String _password;
+  String _errorMessage;
+
+  // Check if form is valid before perform login or signup
+  bool validateAndSave() {
+
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+  void validateAndSubmit(String _email, String _password) async {
+    setState(() {
+      _errorMessage = "";
+      _isLoading = true;
+    });
+    if (validateAndSave()) {
+      print('aquimero');
+      String userId = "";
+      try {
+        print('aqui $_isLoginForm');
+        if (_isLoginForm) {
+          userId = await widget.auth.signIn(_email, _password);
+          print('Signed in: $userId');
+          UserDefaults.shared.userId = userId;
+          UserDefaults.shared.email = _email;
+        } else {
+          userId = await widget.auth.signUp(_email, _password);
+          //widget.auth.sendEmailVerification();
+          //_showVerifyEmailSentDialog();
+          print('Signed up user: $userId');
+        }
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (userId.length > 0 && userId != null && _isLoginForm) {
+          UserDefaults.shared.userId = userId;
+          widget.loginCallback();
+        }
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          _isLoading = false;
+          _errorMessage = e.message;
+          _formKey.currentState.reset();
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -52,7 +134,21 @@ class _MyHomePageState extends State<MyHomePage> {
     contrasenia.dispose();
     super.dispose();
   }
+  @override
+  void initState() {
+    _errorMessage = "";
+    _isLoading = false;
+    _isLoginForm = true;
+    super.initState();
+   
+  }
 
+  void toggleFormMode() {
+    // resetForm();
+    setState(() {
+      _isLoginForm = !_isLoginForm;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     BoxDecoration(
@@ -108,7 +204,6 @@ class _MyHomePageState extends State<MyHomePage> {
           String cpPass = contrasenia.text;
           String cpEmail = email.text;
           Color ink = Colors.amber;
-          String mensaje;
           if (cpEmail.isEmpty && cpPass.isEmpty) {
             scafoldShow("Please enter a valid information!", ink);
           } else if (cpPass.isEmpty && cpEmail.isNotEmpty) {
@@ -117,18 +212,19 @@ class _MyHomePageState extends State<MyHomePage> {
             scafoldShow("The email field can't be empty", ink);
           } else 
           {
-            print('send');
-            ServiceAuth.login(cpEmail, cpPass, (statusCode){
-              print('object');
-              if (statusCode > 400){
-                scafoldShow("Login failed wrong user credentials", Colors.red);
-                return;
-              }
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Menu()),
-              );
-            });
+            validateAndSubmit(cpEmail, cpPass);
+            // print('send');
+            // ServiceAuth.login(cpEmail, cpPass, (statusCode){
+            //   // print('object');
+            //   if (statusCode > 400){
+            //     scafoldShow("Login failed wrong user credentials", Colors.red);
+            //     return;
+            //   }
+            //   Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => Menu()),
+            //   );
+            // });
           } 
         },
         child: Text("Acceder",
@@ -160,7 +256,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold)),
       ),
     );
-
+    final showForm =
+     Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 45.0),
+          emailField,
+          SizedBox(height: 25.0),
+          passwordField,
+          SizedBox(
+            height: 35.0,
+          ),
+          loginButon,
+          SizedBox(
+            height: 15.0,
+          ),
+          registrarButton,
+          SizedBox(
+            height: 15.0,
+          ),
+        ],
+      ),
+    );
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: azul,
@@ -186,27 +306,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(
                         20.0, 80.0, 20.0, 15.0), //36.0
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(height: 45.0),
-                        emailField,
-                        SizedBox(height: 25.0),
-                        passwordField,
-                        SizedBox(
-                          height: 35.0,
-                        ),
-                        loginButon,
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        registrarButton,
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                      ],
-                    ),
+                    child: showForm
+                    // Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       SizedBox(height: 45.0),
+                    //       emailField,
+                    //       SizedBox(height: 25.0),
+                    //       passwordField,
+                    //       SizedBox(
+                    //         height: 35.0,
+                    //       ),
+                    //       loginButon,
+                    //       SizedBox(
+                    //         height: 15.0,
+                    //       ),
+                    //       registrarButton,
+                    //       SizedBox(
+                    //         height: 15.0,
+                    //       ),
+                    //     ],
+                    //   ),
                   ),
                 ),
               ),
@@ -248,4 +369,6 @@ class _MyHomePageState extends State<MyHomePage> {
       duration: Duration(seconds: 2),
     ));
   }
+  
+  
 }

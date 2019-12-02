@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mas_roca/Network/ServiceAuth.dart';
+import 'package:mas_roca/Network/UserDefaults.dart';
 import 'package:mas_roca/Tarjeta.dart';
 
 import 'Drawer.dart';
@@ -67,8 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
-                  getCardList(),
-                  Button_CornerRadius(text: 'Button',color: Colors.red),
+                  
+                  getCardListFirebase(),
+                  // Button_CornerRadius(text: 'Button',color: Colors.red),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
                     child: Material(  //Wrap with Material
@@ -106,11 +110,51 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder<List<Tarjeta>>(
       future: ServiceCard.getCards(),
       builder: (context, snapshot) {
+        
         if (snapshot.hasError) print(snapshot.error);
         print(snapshot);
         return snapshot.hasData
             ? TarjetaList(card: snapshot.data)
             : Center(child: CircularProgressIndicator());
+      },
+    );
+    
+  }
+  getCardListFirebase(){
+    print('holi');
+    print(UserDefaults.shared.email);
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').snapshots(),
+      builder: (context, snapshot) {
+        print(snapshot);
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            print('aguanta...');
+            return new Text('Loading...');
+          default:
+            print('aqui');
+            print(snapshot.data.documents);
+            if(snapshot.data.documents.length == 0){
+              return Text('No hay tarjetas');
+            } else {
+              return GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                ),
+                shrinkWrap: true,
+                children: snapshot.data.documents.map((DocumentSnapshot document) {
+                  // print(document.documentID);
+                  print('aquimero');
+                  return 
+                    CustomCard(
+                      tarjeta: Tarjeta.fromSnapshot(document),
+                    );
+                }).toList()
+              );
+            }
+        }
       },
     );
   }
@@ -127,32 +171,17 @@ class TarjetaList extends StatelessWidget {
   Widget build(BuildContext context) {
     print(card.length);
     return ListView.builder(
-      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //   crossAxisCount: 1,
-      // ),
       shrinkWrap: true,
       itemCount: card.length,
       itemBuilder: (context, index) {
         print(index);
         print(card[index].numero);
         return  
-        // GestureDetector(
-          // child: 
           CustomCard(
             tarjeta: card[index],
-            // width: 50.0,
           );
-          // onTap: () {}
-          // child: Text(card[index].numero),
-        // );
       },
     );
-  }
-  String guardImagen(String route){
-    if(route == null){
-      return "images/placeholder.jpg";
-    }
-    return route;
   }
 }
 class CustomCard extends StatelessWidget {
@@ -165,14 +194,14 @@ class CustomCard extends StatelessWidget {
     int length = tarjeta.numero.length;
     String lastNumbers = tarjeta.numero[length-3]+tarjeta.numero[length-2]+tarjeta.numero[length-1];
     return 
-    // SizedBox(
-      // width: width,
-      // height: 200,
-      // child: 
+    SizedBox(
+      width: width,
+      child: 
       Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(0.0),
         child: Container(
-          // width: double.infinity,
+          height: 100,
+          width: double.infinity,
           decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
               Radius.circular(10.0) //         <--- border radius here
           )),
@@ -196,56 +225,70 @@ class CustomCard extends StatelessWidget {
                                 ]
                             )
                         ),
-                        Padding(
-                          padding:  const EdgeInsets.fromLTRB(0, 20, 0,0),
-                          child:Container(
-                              child:Stack(
-                                  children: <Widget>[
-                                    Button_CornerRadius(text: 'Button',),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                      width: 90,
-                                      child:Material(
-                                        borderRadius: BorderRadius.circular(30.0),
-                                        color: Color.fromRGBO(40, 52, 150, 1),
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                          },
-                                          child: Text("Editar",
-                                            textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                      width: 210,
-                                      child:Material(
-                                        borderRadius: BorderRadius.circular(30.0),
-
-                                        color: Colors.red,
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                          },
-                                          child: Text("Eliminar",
-                                            textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                   ]
-                              )
-                          ),
-                        )
-                      ]
-                  )
+                        buttons()
+                  ])
               )
           ),
         ),
-      // ),
+      ),
     );
+  }
+
+  buttons(){
+    return Padding(
+      padding:  const EdgeInsets.fromLTRB(0, 20, 0,0),
+      child:Container(
+          child:Stack(
+              children: <Widget>[
+                Button_CornerRadius(text: 'Button',),
+                Container(
+                  alignment: Alignment.topRight,
+                  padding:  const EdgeInsets.fromLTRB(0,0,0,10),
+                  width: 90,
+                  child:Material(
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Color.fromRGBO(40, 52, 150, 1),
+                    child: MaterialButton(
+                      onPressed: () {
+                      },
+                      child: Text("Editar",
+                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  padding:  const EdgeInsets.fromLTRB(10,0,0,10),
+                  width: 210,
+                  child:Material(
+                    borderRadius: BorderRadius.circular(30.0),
+
+                    color: Colors.red,
+                    child: MaterialButton(
+                      onPressed: (){
+                        print('Elimina');
+                        eliminaTarjeta(tarjeta.id);
+                      },
+                      child: Text("Eliminar",
+                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                )
+                ]
+          )
+      ),
+    );
+  }
+  eliminaTarjeta(String docId){
+    Firestore.instance
+        .collection('users')
+        .document(UserDefaults.shared.email).collection('tarjetas').document(docId)
+        .delete()
+        .catchError((e) {
+      print(e);
+    });
   }
 }
 class Button_CornerRadius extends StatelessWidget{

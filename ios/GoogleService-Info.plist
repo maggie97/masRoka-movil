@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>289034980146-b7489naa5q26fhnt045fdjnbo7ohd1sf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.289034980146-b7489naa5q26fhnt045fdjnbo7ohd1sf</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC0amDDQd8z1Lfgn0UCZxGwTxNaniV1-Ck</string>
+	<key>GCM_SENDER_ID</key>
+	<string>289034980146</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.octaviocortes.masRoca</string>
+	<key>PROJECT_ID</key>
+	<string>masrocka</string>
+	<key>STORAGE_BUCKET</key>
+	<string>masrocka.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:289034980146:ios:60d02b384ccba75bff652b</string>
+	<key>DATABASE_URL</key>
+	<string>https://masrocka.firebaseio.com</string>
+</dict>
+</plist>

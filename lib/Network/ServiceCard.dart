@@ -10,6 +10,8 @@ import 'HTTPRequestConvertible.dart';
 class ServiceCard{
     static Future<List<Tarjeta>> getCards() async {
       var response = await NetworkLayer.requestGet(TarjetaRouter.getCards().url);
+      print('status ${response.statusCode}');
+      print('bidy');
       print(response.body);
       var list = compute(parseCards, response.body);
       print(list);
@@ -23,6 +25,7 @@ class ServiceCard{
 }
 class TarjetaRouter{
   static HTTPRequestConvertible getCards(){
-    return HTTPRequestConvertible(URL.heroku + '/Tarjeta' , HttpRequest.get );
+    return HTTPRequestConvertible(URL.heroku + '/Tarjeta' , HttpRequest.get, 
+    headers: {'User-Agent': 'MasRocka-movil'} );
   }
 }
