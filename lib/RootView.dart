@@ -22,14 +22,11 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = "";
 
   @override
   void initState() {
     super.initState();
-    print('use');
     widget.auth.getCurrentUser().then((user) {
-      print(user);
       setState(() {
         if (user != null) {
           UserDefaults.shared.userId = user?.uid;

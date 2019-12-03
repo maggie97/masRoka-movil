@@ -14,7 +14,6 @@ class RocaList extends StatelessWidget {
   // Don't forget to pass in the context!
   @override
   Widget build(BuildContext context) {
-    print(rocas);
     return _buildList(context);
   }
 
@@ -31,8 +30,6 @@ class RocaList extends StatelessWidget {
       // A callback that will return a widget.
       itemBuilder: (context, int) {
         // In our case, a DogCard for each doggo.
-        print('roca_list.dart');
-        print('Nombre: ${rocas[int]}, ');
         return RoCard(rocas[int]);
       },
     );

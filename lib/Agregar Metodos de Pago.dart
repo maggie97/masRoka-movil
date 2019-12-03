@@ -112,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, snapshot) {
         
         if (snapshot.hasError) print(snapshot.error);
-        print(snapshot);
         return snapshot.hasData
             ? TarjetaList(card: snapshot.data)
             : Center(child: CircularProgressIndicator());
@@ -120,21 +119,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   getCardListFirebase(){
-    print('holi');
-    print(UserDefaults.shared.email);
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').snapshots(),
       builder: (context, snapshot) {
-        print(snapshot);
         if (snapshot.hasError)
           return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            print('aguanta...');
             return new Text('Loading...');
           default:
-            print('aqui');
-            print(snapshot.data.documents);
             if(snapshot.data.documents.length == 0){
               return Text('No hay tarjetas');
             } else {
@@ -146,8 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   shrinkWrap: true,
                   children: snapshot.data.documents.map((DocumentSnapshot document) {
-                    // print(document.documentID);
-                    print('aquimero');
                     return 
                       CustomCard(
                         tarjeta: Tarjeta.fromSnapshot(document),
@@ -171,13 +162,10 @@ class TarjetaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(card.length);
     return ListView.builder(
       shrinkWrap: true,
       itemCount: card.length,
       itemBuilder: (context, index) {
-        print(index);
-        print(card[index].numero);
         return  
           CustomCard(
             tarjeta: card[index],
@@ -269,7 +257,6 @@ class CustomCard extends StatelessWidget {
                     color: Colors.red,
                     child: MaterialButton(
                       onPressed: (){
-                        print('Elimina');
                         eliminaTarjeta(tarjeta.id);
                       },
                       child: Text("Eliminar",
@@ -305,10 +292,10 @@ class Button_CornerRadius extends StatelessWidget{
   Widget build(BuildContext context) {
     double _width = width;
     if (width == null )
-      _width = (MediaQuery.of(context).size.width/3) as double;
+      _width = (MediaQuery.of(context).size.width/3);
 
     return Container(
-      // alignment: Alignment.topRight,
+      alignment: Alignment.topRight,
       padding:  const EdgeInsets.fromLTRB(10,0,0,10),
       width: _width,
       child:Material(

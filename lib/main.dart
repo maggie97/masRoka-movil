@@ -74,8 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
   
   bool _isLoginForm;
   bool _isLoading;
-  // String _email;
-  // String _password;
   String _errorMessage;
 
   // Check if form is valid before perform login or signup
@@ -94,21 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
       _isLoading = true;
     });
     if (validateAndSave()) {
-      print('aquimero');
       String userId = "";
       try {
-        print('aqui $_isLoginForm');
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
           UserDefaults.shared.userId = userId;
           UserDefaults.shared.email = _email;
-        } else {
-          userId = await widget.auth.signUp(_email, _password);
-          //widget.auth.sendEmailVerification();
-          //_showVerifyEmailSentDialog();
-          print('Signed up user: $userId');
-        }
+        } 
         setState(() {
           _isLoading = false;
         });
@@ -213,18 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else 
           {
             validateAndSubmit(cpEmail, cpPass);
-            // print('send');
-            // ServiceAuth.login(cpEmail, cpPass, (statusCode){
-            //   // print('object');
-            //   if (statusCode > 400){
-            //     scafoldShow("Login failed wrong user credentials", Colors.red);
-            //     return;
-            //   }
-            //   Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => Menu()),
-            //   );
-            // });
+            
           } 
         },
         child: Text("Acceder",
@@ -307,27 +286,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.fromLTRB(
                         20.0, 80.0, 20.0, 15.0), //36.0
                     child: showForm
-                    // Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: <Widget>[
-                    //       SizedBox(height: 45.0),
-                    //       emailField,
-                    //       SizedBox(height: 25.0),
-                    //       passwordField,
-                    //       SizedBox(
-                    //         height: 35.0,
-                    //       ),
-                    //       loginButon,
-                    //       SizedBox(
-                    //         height: 15.0,
-                    //       ),
-                    //       registrarButton,
-                    //       SizedBox(
-                    //         height: 15.0,
-                    //       ),
-                    //     ],
-                    //   ),
                   ),
                 ),
               ),

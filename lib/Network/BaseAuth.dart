@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'UserDefaults.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -10,7 +13,7 @@ enum AuthStatus {
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
 
-  Future<String> signUp(String email, String password);
+  Future<String> signUp(String email, String password, String nombre, String apellido);
 
   Future<FirebaseUser> getCurrentUser();
 
@@ -34,12 +37,20 @@ class Auth implements BaseAuth {
     return user.uid;
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future<String> signUp(String email, String password, String nombre, String apellido) async {
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
+    UserDefaults.shared.email = user.email;
+    UserDefaults.shared.userId = user.uid;
+    registroDB(nombre, apellido);
     authStatus = AuthStatus.LOGGED_IN;
     return user.uid;
+  }
+
+  registroDB(String nombre, String apellido){
+    return Firestore.instance.collection('users').document('${UserDefaults.shared.email}')//.collection('productos').document('$idProducto')
+      .setData({ 'Nombre' : nombre,'Apellido': apellido, 'email': UserDefaults.shared.email, 'uuid':UserDefaults.shared.userId }, merge: true);
   }
 
   Future<FirebaseUser> getCurrentUser() async {

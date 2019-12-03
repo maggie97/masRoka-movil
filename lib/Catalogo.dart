@@ -77,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
             return ListView(
               children: snapshot.data.documents
                   .map((DocumentSnapshot document) {
-                print(Product.fromSnapshot(document));
                 return RoCard(Product.fromSnapshot(document));
               }).toList()
             );

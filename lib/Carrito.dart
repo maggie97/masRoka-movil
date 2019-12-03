@@ -1,3 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mas_roca/Agregar%20Metodos%20de%20Pago.dart';
+import 'package:mas_roca/Network/ServiceCarrito.dart';
+import 'package:mas_roca/Network/ServiceProduct.dart';
+import 'package:mas_roca/Product.dart';
+
+import 'DetalleCarrito.dart';
 import 'Drawer.dart';
 import 'ConfirmaPago.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +37,66 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  double total;
 
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
+  
+  listProducts(){
+    return StreamBuilder<QuerySnapshot>(
+      stream: ServiceCarrito.getData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());//new Text('Loading...');
+          default:
+            return ListView(
+              
+              shrinkWrap: true,
+              children: snapshot.data.documents
+                  .map((DocumentSnapshot document) {
+                    var detalle = DetalleCarrito.fromSnapshot(document);
+                return  getCard(detalle);
+                // CarritoCard(producto: DetalleCarrito(),); 
+              }).toList()
+            );
+        }
+      },
+    );
+  }
 
+  Future<Product> getProductCaarrito(DetalleCarrito detalle) async {
+    var doc = await ServiceProduct.getProduct(detalle.idProducto);
+    var p = Product.fromSnapshot(doc);
+    return p;
+  }
+
+  Widget getCard(DetalleCarrito detalle){
+    return FutureBuilder<Product>(
+      future: getProductCaarrito(detalle),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+        return snapshot.hasData
+            ?  CarritoCard(producto: snapshot.data, detalleCarrito: detalle,) 
+            : Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+  priceCarrito(){
+    return FutureBuilder<DocumentSnapshot>(
+      future: ServiceCarrito.getCarito(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+        this.total =  snapshot.data.data['total'];
+        String total = this.total.toStringAsFixed(2);
+        return snapshot.hasData
+            ?  Text( "\$ ${total}",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold)) 
+            : Center(child: CircularProgressIndicator());
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Center(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
 
                   Center(
@@ -62,274 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
-                          Radius.circular(10.0) //         <--- border radius here
-                      )),
-                      child: Padding(
-                          padding:  const EdgeInsets.fromLTRB(0,0,0,0),
-                          child: Container(
-                              child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                        child:Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                                child:Image.asset("images/roca3.jpg", width: 100, height: 100,alignment:Alignment.centerLeft,),
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
-                                                  alignment: Alignment.topCenter,
-                                                  child:Text("Roca Colors",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Cantidad: 1 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Precio: \$ 10.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
-                                              ),
-                                            ]
-                                        )
-                                    ),
-                                    Padding(
-                                      padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
-                                      child:Container(
-                                          child:Stack(
-                                              children: <Widget>[
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                                  width: 90,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-                                                    color: Color.fromRGBO(40, 52, 150, 1),
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Detalles",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                                  width: 210,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-
-                                                    color: Colors.red,
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Eliminar",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-
-                                              ]
-                                          )
-                                      ),
-                                    )
-                                  ]
-                              )
-                          )
-                      ),
-
-                    ),
+                  Container(
+                    height: MediaQuery.of(context).size.height - 250,
+                    child: listProducts(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
-                          Radius.circular(10.0) //         <--- border radius here
-                      )),
-                      child: Padding(
-                          padding:  const EdgeInsets.fromLTRB(0,0,0,0),
-                          child: Container(
-                              child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                        child:Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                                child:Image.asset("images/roca1.jpg", width: 100, height: 100,alignment:Alignment.centerLeft,),
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
-                                                  alignment: Alignment.topCenter,
-                                                  child:Text("Roca Reggae",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Cantidad: 2 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Precio: \$ 3.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
-                                              ),
-                                            ]
-                                        )
-                                    ),
-                                    Padding(
-                                      padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
-                                      child:Container(
-                                          child:Stack(
-                                              children: <Widget>[
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                                  width: 90,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-                                                    color: Color.fromRGBO(40, 52, 150, 1),
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Detalles",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                                  width: 210,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-
-                                                    color: Colors.red,
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Eliminar",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-
-                                              ]
-                                          )
-                                      ),
-                                    )
-                                  ]
-                              )
-                          )
-                      ),
-
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
-                          Radius.circular(10.0) //         <--- border radius here
-                      )),
-                      child: Padding(
-                          padding:  const EdgeInsets.fromLTRB(0,0,0,0),
-                          child: Container(
-                              child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                        child:Stack(
-                                            children: <Widget>[
-                                              Container(
-                                                padding:  const EdgeInsets.fromLTRB(10,0,0,0),
-                                                child:Image.asset("images/roca4.png", width: 100, height: 100,alignment:Alignment.centerLeft,),
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,15,0,0),
-                                                  alignment: Alignment.topCenter,
-                                                  child:Text("Rocky",style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,45,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Cantidad: 1 ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
-                                              ),
-                                              Container(
-                                                  padding:  const EdgeInsets.fromLTRB(100,65,0,0),
-                                                  alignment: Alignment.topCenter,
-
-                                                  child:Text("Precio: \$ 999.99",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
-                                              ),
-                                            ]
-                                        )
-                                    ),
-                                    Padding(
-                                      padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
-                                      child:Container(
-                                          child:Stack(
-                                              children: <Widget>[
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(0,0,0,10),
-                                                  width: 90,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-                                                    color: Color.fromRGBO(40, 52, 150, 1),
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Detalles",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  alignment: Alignment.topRight,
-                                                  padding:  const EdgeInsets.fromLTRB(10,0,0,10),
-                                                  width: 210,
-                                                  child:Material(
-                                                    borderRadius: BorderRadius.circular(30.0),
-
-                                                    color: Colors.red,
-                                                    child: MaterialButton(
-                                                      onPressed: () {
-                                                      },
-                                                      child: Text("Eliminar",
-                                                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-
-                                              ]
-                                          )
-                                      ),
-                                    )
-                                  ]
-                              )
-                          )
-                      ),
-
-                    ),
-                  ),
-
+                  
                    Padding(
                           padding:  const EdgeInsets.fromLTRB(0,0,0,15),
                           child: Container(
@@ -346,8 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                               Container(
                                                   padding:  const EdgeInsets.fromLTRB(100,8,0,0),
                                                   alignment: Alignment.topCenter,
-
-                                                  child:Text("\$ 1,014.97‬",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                                  child: priceCarrito(),
+                                                  // child:Text("\$ 1,014.97‬",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold))
                                               ),
                                             ]
                                         )
@@ -371,8 +173,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: new Text('Pagar',
                             style: new TextStyle(fontSize: 35.0, color: Colors.white)),
                         onPressed: () {
+                          // ServiceCarrito.getDataList();
                           Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ConfirmaP()),
+                            MaterialPageRoute(builder: (context) => ConfirmaP(total: total ,)),
                           );
                         },
                       ),
@@ -390,4 +193,120 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Cajon(),
     );
   }
+  
+  
+}
+
+class CarritoCard extends StatelessWidget{
+
+  final DetalleCarrito detalleCarrito;
+  final Product producto;
+  const CarritoCard({Key key, this.producto, this.detalleCarrito}) : super(key: key);
+
+  showImagen(){
+    return Container(
+      padding:  const EdgeInsets.fromLTRB(10,0,0,0),
+      child:Image.asset(producto.routeImg, width: 100, height: 100,alignment:Alignment.centerLeft,),
+    );
+  }
+  showNombre(){
+    return Container(
+        padding:  const EdgeInsets.fromLTRB(100,15,0,0),
+        alignment: Alignment.topCenter,
+        child:Text(producto.name, style: TextStyle(fontSize: 22.5, color: Colors.grey[900], fontWeight: FontWeight.bold))
+    );
+  }
+  showCantidad(){
+    return Container(
+        padding:  const EdgeInsets.fromLTRB(100,45,0,0),
+        alignment: Alignment.topCenter,
+
+        child:Text("Cantidad: ${detalleCarrito.cantidad} ",style: TextStyle(fontSize: 15, color: Colors.grey[700], fontWeight: FontWeight.bold))
+    );
+  }
+  showPrecio(){
+    return Container(
+        padding:  const EdgeInsets.fromLTRB(100,65,0,0),
+        alignment: Alignment.topCenter,
+
+        child:Text("Precio: \$ ${detalleCarrito.subtotal}",style: TextStyle(fontSize: 17.5, color: Colors.grey[700]))
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
+            Radius.circular(10.0) //         <--- border radius here
+        )),
+        child: Padding(
+            padding:  const EdgeInsets.fromLTRB(0,0,0,0),
+            child: Container(
+                child: Column(
+                    children: <Widget>[
+                      Container(
+                          child:Stack(
+                              children: <Widget>[
+                                showImagen(),
+                                showNombre(),
+                                showCantidad(),
+                                showPrecio()
+                              ]
+                          )
+                      ),
+                      Padding(
+                        padding:  const EdgeInsets.fromLTRB(0, 0, 0,0),
+                        child: Container(
+                            child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    padding:  const EdgeInsets.fromLTRB(0,0,0,10),
+                                    width: 90,
+                                    child:Material(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      color: Color.fromRGBO(40, 52, 150, 1),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                        },
+                                        child: Text("Detalles",
+                                          textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    padding:  const EdgeInsets.fromLTRB(10,0,0,10),
+                                    width: 210,
+                                    child:Material(
+                                      borderRadius: BorderRadius.circular(30.0),
+
+                                      color: Colors.red,
+                                      child: MaterialButton(
+                                        onPressed: () => ServiceCarrito.eliminaProducto(this.producto.productId),
+                                        child: Text("Eliminar",
+                                          textAlign: TextAlign.center, style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                
+
+                                ]
+                            )
+                        ),
+                      )
+                    ]
+                )
+            )
+        ),
+
+      ),
+    );
+  }
+
 }

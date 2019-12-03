@@ -123,7 +123,7 @@ class _RockDetailPageState extends State<RockDetailPage> {
                     child: new Text('Agregar al carrito',
                         style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                     onPressed: () {
-                      ServiceCarrito.agregaProducto(widget.roca.productId, 1, widget.roca.precio);
+                      ServiceCarrito.agregaProducto(widget.roca.productId, widget.roca, 1, widget.roca.precio);
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute( builder: (context) {
                         return Carrito();

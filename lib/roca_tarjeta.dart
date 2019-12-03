@@ -60,7 +60,6 @@ class _RoCardState extends State<RoCard> {
    */
 
   Widget get RoCard {
-    print('inside');
     // A new container
     // The height and width are arbitrary numbers for styling.
     return Container(
@@ -119,7 +118,6 @@ class _RoCardState extends State<RoCard> {
 
   Widget get RocaImagen {
     renderUrl = widget.roca.routeImg;
-    print("valor ::: ${renderUrl}");
     return Container(
         width: 100,
         //height: 100,

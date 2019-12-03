@@ -142,7 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
             //   future: ServiceProduct.getProducts(),
             //   builder: (context, snapshot) {
             //     if (snapshot.hasError) print(snapshot.error);
-            //     print(snapshot);
             //     return snapshot.hasData
             //         ? PhotosList(photos: snapshot.data)
             //         : Center(child: CircularProgressIndicator());
@@ -171,7 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('Productos').snapshots(),
       builder: (context, snapshot) {
-        print(snapshot);
         if (snapshot.hasError)
           return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
@@ -238,7 +236,6 @@ class PhotoHero extends StatelessWidget {
   final Product product;
 
   Widget build(BuildContext context) {
-    print(product.name);
     if(product == null ) return Text('Imagen No Encntrada');
     String tag = product.name;
     String ruta = product.routeImg;

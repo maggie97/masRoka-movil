@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mas_roca/Network/UserDefaults.dart';
 import 'package:mas_roca/home.dart';
 
 import 'Drawer.dart';
@@ -327,8 +328,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
   void createRecord(int cvv, String numero, String fechaVenc) {
-    print('here');
-    Firestore.instance.collection('users').document('maggie@hotmail.com').collection('tarjetas').document()
+
+    Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').document()
       .setData({ 'cvv': cvv, 'numeroTarjeta': numero, 'vencimiento': fechaVenc }, merge: true);
   }
 }

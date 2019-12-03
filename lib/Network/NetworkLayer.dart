@@ -10,13 +10,13 @@ class NetworkLayer{
       if(urlRequest.typeRequest == HttpRequest.get){
         //final http.Response response = await requestGet( url );
         requestGet(urlRequest.url).then((response){
-          print('get');
+          // print('get');
           success(response);
         });
       }
       else {
         requestPost(urlRequest.url, headers: urlRequest.headers, body: urlRequest.body).then((response) {
-          print(response);
+          // print(response);
           success(response);
         });
       }
