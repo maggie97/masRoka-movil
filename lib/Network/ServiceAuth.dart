@@ -39,22 +39,23 @@ class ServiceAuth{
 class AuthRouter{
   static final token = 'E4dye13K0P4HfZ8YGeFfHArNH2I7rxhOx1Pofe0r';
   static HTTPRequestConvertible loginURL(user, password ){
-    return HTTPRequestConvertible(URL.local + '/authenticate' , HttpRequest.post, 
-        headers: {'Content-Type' : 'application/json', 'User-Agent': 'MasRocka-movil',
-                  'Cookie':'laravel_session=eyJpdiI6IjdQZTJrZDZVQjk4TG1la2ZIU2RpM2c9PSIsInZhbHVlIjoiQXYrU2NjNzdiQ0pwZThjUnlaeEk4eDFqUVwvbVpndTBHYnFNSENidzI0bkZWeTBzVzh3WWlaN3RWQ2lnQUhwWUkiLCJtYWMiOiI0ZTE4NDExMDg3MDQzMDE2NTU5NjE3YzkzNjQwMDFjOTBiOTRlZjFmYmU3ZWVjOTdmMDAxZGFiMmNkYWRiNWMzIn0%3D'
+    return HTTPRequestConvertible(URL.heroku + '/authenticate' , HttpRequest.post, 
+        headers: {'Content-Type' : 'application/json', 
+        // 'User-Agent': 'MasRocka-movil'
+                  // 'Cookie':'laravel_session=eyJpdiI6IjdQZTJrZDZVQjk4TG1la2ZIU2RpM2c9PSIsInZhbHVlIjoiQXYrU2NjNzdiQ0pwZThjUnlaeEk4eDFqUVwvbVpndTBHYnFNSENidzI0bkZWeTBzVzh3WWlaN3RWQ2lnQUhwWUkiLCJtYWMiOiI0ZTE4NDExMDg3MDQzMDE2NTU5NjE3YzkzNjQwMDFjOTBiOTRlZjFmYmU3ZWVjOTdmMDAxZGFiMmNkYWRiNWMzIn0%3D'
         }, 
         body: '{ "email": "$user", "_token": "$token", "password": "$password" }'
     );
   }
   static HTTPRequestConvertible logOut(){
-    return HTTPRequestConvertible(URL.heroku + '/logout' , HttpRequest.post, 
+    return HTTPRequestConvertible(URL.heroku + '/salir' , HttpRequest.post, 
         headers: {'Content-Type' : 'application/json', 'User-Agent': 'MasRocka-movil'}, 
         body: '{ "_token": "$token" }'
     );
   }
 
   static HTTPRequestConvertible registro(String user, String password, String name ){
-    return HTTPRequestConvertible(URL.heroku + '/logout' , HttpRequest.post, 
+    return HTTPRequestConvertible(URL.heroku + '/User' , HttpRequest.post, 
         headers: {'Content-Type' : 'application/json', 
               'User-Agent': 'MasRocka-movil',
               'Cookie':'laravel_session=eyJpdiI6IjdQZTJrZDZVQjk4TG1la2ZIU2RpM2c9PSIsInZhbHVlIjoiQXYrU2NjNzdiQ0pwZThjUnlaeEk4eDFqUVwvbVpndTBHYnFNSENidzI0bkZWeTBzVzh3WWlaN3RWQ2lnQUhwWUkiLCJtYWMiOiI0ZTE4NDExMDg3MDQzMDE2NTU5NjE3YzkzNjQwMDFjOTBiOTRlZjFmYmU3ZWVjOTdmMDAxZGFiMmNkYWRiNWMzIn0%3D'

@@ -95,18 +95,29 @@ class _MyHomePageState extends State<MyHomePage> {
       String userId = "";
       try {
         if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
-          UserDefaults.shared.userId = userId;
-          UserDefaults.shared.email = _email;
+          // ServiceAuth.login(_email, _password, (response) async {
+          //   if(response < 400){
+              userId = await widget.auth.signIn(_email, _password);
+              UserDefaults.shared.userId = userId;
+              UserDefaults.shared.email = _email;
+              if (UserDefaults.shared.userId.length > 0 && UserDefaults.shared.userId  != null) {
+                // UserDefaults.shared.userId = userId;
+                widget.loginCallback();
+              }
+              //  widget.loginCallback();
+            // }
+            // else {
+            //   _errorMessage = 'Datos erroneos';
+            // }
+          // }
+          // );
+          
         } 
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null && _isLoginForm) {
-          UserDefaults.shared.userId = userId;
-          widget.loginCallback();
-        }
+        
       } catch (e) {
         print('Error: $e');
         setState(() {

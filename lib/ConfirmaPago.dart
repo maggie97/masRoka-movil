@@ -12,8 +12,9 @@ import 'Network/UserDefaults.dart';
 class ConfirmaP extends StatelessWidget {
   // This widget is the root of your application.
   final double total;
+  final List<String> list;
 
-  const ConfirmaP({Key key, this.total = 0}) : super(key: key);
+  const ConfirmaP({Key key, this.total = 0, this.list}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -23,16 +24,17 @@ class ConfirmaP extends StatelessWidget {
         secondaryHeaderColor: Color.fromRGBO(255, 173, 65, 1),
         backgroundColor: Color.fromRGBO(40, 52, 150, 1), //azul
       ),
-      home: MyHomePage(title: 'Bienvenidos :3', total: total,),
+      home: MyHomePage(title: 'Bienvenidos :3', total: total, products: list ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.total}) : super(key: key);
+  MyHomePage({Key key, this.title, this.total, this.products}) : super(key: key);
 
   final String title;
   final double total;
+  final List<String> products;
 
 
   @override
@@ -47,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
  
   muestraDropdawn(List<Tarjeta> list){
     print('length' + getOptions(list).length.toString());
-    var listDrop =  list.map<DropdownMenuItem<String>>((value) {
+    var listDrop;
+    listDrop =  list.map<DropdownMenuItem<String>>((value) {
             print(value.id);
             var leng = value.numero.length - 1;
             var lastNumbers = value.numero[leng- 2] + value.numero[leng -1 ] +value.numero[leng];
@@ -114,6 +117,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   getCardListFirebase(){
+    var listDrop = List< DropdownMenuItem<String>>();
+    listDrop.add(DropdownMenuItem<String>(
+                value: 'Agregar...',
+                child: Text('Agregar...'),
+              ));
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').snapshots(),
       builder: (context, snapshot) {
@@ -124,7 +132,27 @@ class _MyHomePageState extends State<MyHomePage> {
             return new Text('Loading...');
           default:
             if(snapshot.data.documents.length == 0){
-              return Text('No hay tarjetas');
+              return Padding(
+                    padding: EdgeInsets.fromLTRB(180.0, 5, 0.0, 0.0),
+                    child: Material(  //Wrap with Material
+                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                      elevation: 18.0,
+                      color: Color.fromRGBO(255, 173, 65, 1),
+                      clipBehavior: Clip.antiAlias, // Add This
+                      child: MaterialButton(
+                        minWidth: 80.0,
+                        height: 50,
+                        color:  Color.fromRGBO(255, 173, 65, 1),
+                        child: new Text('Agregar otra tarjeta',
+                            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => AgregaTarjeta         ()),
+                          );
+                        },
+                      ),
+                    ),
+                  );
             } else {
               var list = snapshot.data.documents.map((DocumentSnapshot document) {
                     return Tarjeta.fromSnapshot(document);
@@ -265,7 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: new Text('Pagar',
                               style: new TextStyle(fontSize: 35.0, color: Colors.white)),
                           onPressed: () {
-                            ServiceCarrito.carritoToVentas(dropdownValue);
+                            ServiceCarrito.carritoToVentas(dropdownValue, widget.products);
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => Compra()),
@@ -287,6 +315,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: Cajon(),
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
+
+    //this method not called when user press android back button or quit
+    print('dispose');
   }
 
 }

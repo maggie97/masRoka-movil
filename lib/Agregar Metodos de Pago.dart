@@ -133,10 +133,10 @@ class _MyHomePageState extends State<MyHomePage> {
             } else {
               return Container(
                 height: MediaQuery.of(context).size.height - 220,
-                child: GridView(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                  ),
+                child: ListView(
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 1,
+                  // ),
                   shrinkWrap: true,
                   children: snapshot.data.documents.map((DocumentSnapshot document) {
                     return 
@@ -180,25 +180,31 @@ class CustomCard extends StatelessWidget {
   final Tarjeta tarjeta;
   final double width;
 
+  BuildContext get context => null;
+
   Widget build(BuildContext context) {
     int length = tarjeta.numero.length;
     String lastNumbers = tarjeta.numero[length-3]+tarjeta.numero[length-2]+tarjeta.numero[length-1];
     return 
-    SizedBox(
-      width: width,
-      child: 
+    // SizedBox(
+    //   width: width,
+    //   child: 
       Padding(
         padding: EdgeInsets.all(10.0),
-        child: Container(
-          height: 100,
-          width: double.infinity,
+        child: 
+        Container(
+          // height: 100,
+          width: 1000,
           decoration: BoxDecoration(color: Colors.grey[200],borderRadius: BorderRadius.all(
               Radius.circular(10.0) //         <--- border radius here
           )),
-          child: Padding(
-              padding:  const EdgeInsets.fromLTRB(0,0,0,0),
+          // child: Padding(
+          //     padding:   EdgeInsets.fromLTRB(0,0,0,0),
               child: Container(
-                  child:  Column( children: <Widget>[
+                 
+                  child:  Column( 
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
                         Container(
                             child:Stack(
                                 children: <Widget>[
@@ -215,22 +221,22 @@ class CustomCard extends StatelessWidget {
                                 ]
                             )
                         ),
-                        buttons()
+                        buttons(context),
+                        
                   ])
-              )
+              // )
           ),
         ),
-      ),
+      // ),
     );
   }
 
-  buttons(){
+  buttons(BuildContext context){
     return Padding(
       padding:  const EdgeInsets.fromLTRB(0, 20, 0,0),
       child:Container(
           child:Stack(
               children: <Widget>[
-                Button_CornerRadius(text: 'Button',),
                 Container(
                   alignment: Alignment.topRight,
                   padding:  const EdgeInsets.fromLTRB(0,0,0,10),
@@ -240,6 +246,9 @@ class CustomCard extends StatelessWidget {
                     color: Color.fromRGBO(40, 52, 150, 1),
                     child: MaterialButton(
                       onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => AgregaTarjeta(title: "Editar Tarjeta", tarjeta: tarjeta,)),
+                          );
                       },
                       child: Text("Editar",
                         textAlign: TextAlign.center, style: TextStyle(color: Colors.white),

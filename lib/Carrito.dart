@@ -9,6 +9,8 @@ import 'Drawer.dart';
 import 'ConfirmaPago.dart';
 import 'package:flutter/material.dart';
 
+import 'Network/UserDefaults.dart';
+
 class Carrito extends StatelessWidget {
   // This widget is the root of your application.
 
@@ -38,6 +40,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   double total;
+  List<String> listId = new List<String>();
 
   TextStyle style = TextStyle(
       fontSize: 25.0, color: Colors.white, fontWeight: FontWeight.bold);
@@ -74,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget getCard(DetalleCarrito detalle){
+    listId.add(detalle.idProducto);
     return FutureBuilder<Product>(
       future: getProductCaarrito(detalle),
       builder: (context, snapshot) {
@@ -84,19 +88,43 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-  priceCarrito(){
+  FutureBuilder<DocumentSnapshot> priceCarrito(){
     return FutureBuilder<DocumentSnapshot>(
       future: ServiceCarrito.getCarito(),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
-        this.total =  snapshot.data.data['total'];
-        String total = this.total.toStringAsFixed(2);
-        return snapshot.hasData
-            ?  Text( "\$ ${total}",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold)) 
-            : Center(child: CircularProgressIndicator());
+        if(snapshot.data!= null){
+          this.total =  double.parse(snapshot.data.data['total'].toString());
+          print(total.toStringAsFixed(2));
+          String _total = this.total.toStringAsFixed(2);
+          return Text( "\$ $_total",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold));
+              
+        }
+        print(snapshot.data);
+        Text( 'Loading...');
+            // : Center(child: CircularProgressIndicator());
+      },
+    );
+
+    
+  }
+  totalStream(){
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance.collection('carrito').document('${UserDefaults.shared.email}').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());//new Text('Loading...');
+          default:
+            total = snapshot.data.data['total'];
+            return Text('\$ ${snapshot.data.data['total']}',style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold));
+        }
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,11 +173,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   alignment: Alignment.centerLeft,
                                                   child:Text("Total:",style: TextStyle(fontSize: 25, color: Colors.grey[900], fontWeight: FontWeight.bold))
                                               ),
+                                              // priceCarrito(),
                                               Container(
                                                   padding:  const EdgeInsets.fromLTRB(100,8,0,0),
                                                   alignment: Alignment.topCenter,
-                                                  child: priceCarrito(),
-                                                  // child:Text("\$ 1,014.97‬",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold))
+                                                  child: totalStream() ,
+                                                  // child:Text("\$ ${total == 0? 0: total}",style: TextStyle(fontSize: 30, color: Colors.grey[700], fontWeight: FontWeight.bold))
                                               ),
                                             ]
                                         )
@@ -174,8 +203,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: new TextStyle(fontSize: 35.0, color: Colors.white)),
                         onPressed: () {
                           // ServiceCarrito.getDataList();
+                          print(total);
                           Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => ConfirmaP(total: total ,)),
+                            MaterialPageRoute(builder: (context) => ConfirmaP(total: total ,list: listId,)),
                           );
                         },
                       ),

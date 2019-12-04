@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mas_roca/roca_detalle.dart';
 
+import 'Catalogo.dart';
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
 import 'Carrito.dart';
@@ -108,8 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: PhotoHero(
                       product: Product(name: "Antipulgas", routeImg: "images/Accesorio.jpg"),
                       width: 150.0,
+                      bandera: true,
                     ),
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Catalogo()),
+                      );
+                    }),
                 Padding(
                   padding: EdgeInsets.all(10.0),
                 ),
@@ -117,8 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: PhotoHero(
                       product: Product(name: "Cupon", routeImg: "images/roca1.jpg"),
                       width: 150.0,
+                      bandera: true,
                     ),
-                    onTap: () {}),
+                    onTap: () {
+                      print('ontap');
+                      
+                    }),
                 Padding(
                   padding: EdgeInsets.all(5.0),
                 ),
@@ -226,8 +237,9 @@ class PhotosList extends StatelessWidget {
 }
 class PhotoHero extends StatelessWidget {
   const PhotoHero(
-      {Key key, this.onTap, this.width, this.product})
+      {Key key, this.onTap, this.width, this.product, this.bandera = false})
       : super(key: key);
+  final bool bandera;
   
   //  String tag;
   //  String ruta;
@@ -252,10 +264,19 @@ class PhotoHero extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => Navigator.of(context).push( MaterialPageRoute( builder: (context) {
+            onTap: () { 
+              if(bandera){ 
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Catalogo()),
+                );
+                return;
+              }
+              Navigator.of(context).push( MaterialPageRoute( builder: (context) {
                   return RockDetailPage(product);
                 },),
-            ),
+              );
+            },
             child: Image.asset(ruta),
           ),
         ),

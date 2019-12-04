@@ -49,6 +49,8 @@ class Auth implements BaseAuth {
   }
 
   registroDB(String nombre, String apellido){
+    Firestore.instance.collection('carrito').document('${UserDefaults.shared.email}')//.collection('productos').document('$idProducto')
+      .setData({ 'total' : 0}, merge: true);
     return Firestore.instance.collection('users').document('${UserDefaults.shared.email}')//.collection('productos').document('$idProducto')
       .setData({ 'Nombre' : nombre,'Apellido': apellido, 'email': UserDefaults.shared.email, 'uuid':UserDefaults.shared.userId }, merge: true);
   }

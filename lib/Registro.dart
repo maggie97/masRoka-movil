@@ -206,12 +206,8 @@ class _MyHomePageState extends State<MyHomePage> {
           } else if (cpPass.isNotEmpty && cpEmail.isNotEmpty && cpName.isNotEmpty ) {
             ServiceAuth.registrar(cpEmail, cpPass, cpName, (status){
               if(status < 400){
+                print('registro');
                 validateAndSubmit(cpEmail, cpPass, cpName);
-            //     Auth.instance.signUp(cpEmail, cpPass, cpName , 'apellido');
-            //     Navigator.pushReplacement(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => Menu()),
-            //     );
               }
               else{
                 scafoldShow("El email ingresado ya existe",ink);

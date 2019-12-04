@@ -5,36 +5,39 @@ import '../Product.dart';
 
 class ServiceCarrito{
   static void agregaProducto(String idProducto, Product producto, int cantidad, double precio){
+    print('producto $producto, $idProducto, $cantidad, $precio');
+    // Firestore.instance.collection('carrito').document('${UserDefaults.shared.email}').collection(collectionPath)
     Firestore.instance.collection('carrito').document('${UserDefaults.shared.email}').collection('productos').document('$idProducto')
-      .setData({ 'idProducto' : idProducto,'cantidad': cantidad, 'precio': precio*cantidad }, merge: true);
-    getCarito().then((response){
-      double total = double.parse(response.data['total'].toString());
-      updateData(total + precio);
-    });
+      .setData({ 'idProducto' : idProducto,'cantidad': cantidad, 'precio': precio*cantidad }, merge: true).whenComplete((){
+            getCarito().then((response){
+          double total = double.parse(response.data['total'].toString());
+          updateData(total + precio);
+        });
+      });
+    
   }
 
   static Stream<QuerySnapshot> getData() {
     return Firestore.instance.collection('carrito')
             .document('${UserDefaults.shared.email}').collection('productos').snapshots();
   }
-  static  carritoToVentas(String tarjetaId) async {
+  static  carritoToVentas(String tarjetaId, List<String> productos) async {
     double total = 0;
     
     await getCarito().then((doc) async {
       total = doc.data['total'];
-      
-      Firestore.instance.collection('ventas').document('${UserDefaults.shared.email}')
+      var date = DateTime.now();
+      Firestore.instance.collection('ventas').document('${UserDefaults.shared.email}').collection('ventas').document(date.toString())
             .setData({'total': total, 'tarjetaId': tarjetaId}, merge: true);
-      var wait = await getData().forEach((snapshot){
-        snapshot.documents.forEach((doc){
-          Firestore.instance.collection('ventas').document('${UserDefaults.shared.email}').collection('ventas')
-            .document().collection('productos').document('${doc.documentID}')
-            .setData(doc.data, merge: true);
-        });
-      });
 
     });
-   
+    for (var producto in productos) {
+      print(producto);
+      Firestore.instance.collection('carrito')
+          .document('${UserDefaults.shared.email}').collection('productos').document('$producto').delete();
+    }
+   Firestore.instance.collection('carrito')
+          .document('${UserDefaults.shared.email}').updateData({'total': 0});
   }
 
   static Future<DocumentSnapshot> getCarito() async {
@@ -55,14 +58,27 @@ class ServiceCarrito{
     });
   }
 
-  static eliminaCarrito(String docId, {Function onError}){
-    Firestore.instance
+  static eliminaCarrito({Function onError}) async {
+    print(UserDefaults.shared.email);
+    var docs = await Firestore.instance
         .collection('carrito')
-        .document(UserDefaults.shared.email)
-        .delete()
-        .catchError((e) {
-      onError();
-    });
+        .document(UserDefaults.shared.email).collection('productos').limit(100).getDocuments();
+    for(int i =0 ; i < docs.documents.length; i++ ){
+      var doc = docs.documents[i];
+      print(doc.documentID);
+      Firestore.instance
+        .collection('carrito')
+        .document(UserDefaults.shared.email).collection('productos').document(doc.documentID).delete();
+    }
+    // docs.documents.removeRange(0, docs.documents.length -1);
+        // .snapshots().forEach((action){
+        //   action.documents.forEach((f){
+        //     Firestore.instance
+        //       .collection('carrito')
+        //       .document(UserDefaults.shared.email).collection('productos').document(f.documentID).delete();
+        //     return;
+        //   });
+        // });
   }
 
 }

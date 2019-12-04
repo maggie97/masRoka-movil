@@ -91,8 +91,16 @@ class Cajon extends StatelessWidget {
               style: style,
               textAlign: TextAlign.left,),
             onTap: () {
-              Auth.instance.signOut();
-              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => RootPage()));
+              
+              ServiceAuth.logout((status){
+                print(status);
+                if(status<400){
+                  Auth.instance.signOut();
+                  Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => RootPage()));
+                }
+
+              });
+              
             },
           ),
 

@@ -1,51 +1,65 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mas_roca/Network/UserDefaults.dart';
+import 'package:mas_roca/Tarjeta.dart';
 import 'package:mas_roca/home.dart';
 
 import 'Drawer.dart';
 import 'package:flutter/material.dart';
 import 'Carrito.dart';
 import 'Detalles.dart';
-class AgregaTarjeta extends StatelessWidget {
-  // This widget is the root of your application.
+// class AgregaTarjeta extends StatelessWidget {
+//   // This widget is the root of your application.
 
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: '+Roca',
-      theme: new ThemeData(
-        primaryColor: Color.fromRGBO(255, 173, 65, 1),
-        secondaryHeaderColor: Color.fromRGBO(255, 173, 65, 1),
-        backgroundColor: Color.fromRGBO(40, 52, 150, 1), //azul
-      ),
-      home: MyHomePage(title: 'Bienvenidos :3'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return new MaterialApp(
+//       title: '+Roca',
+//       theme: new ThemeData(
+//         primaryColor: Color.fromRGBO(255, 173, 65, 1),
+//         secondaryHeaderColor: Color.fromRGBO(255, 173, 65, 1),
+//         backgroundColor: Color.fromRGBO(40, 52, 150, 1), //azul
+//       ),
+//       home: MyHomePage(title: 'Bienvenidos :3'),
+//     );
+//   }
+// }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class AgregaTarjeta extends StatefulWidget {
+  AgregaTarjeta({Key key, this.title = 'Agregar Tarjeta', this.tarjeta}) : super(key: key);
 
   final String title;
-
+  final Tarjeta tarjeta;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _AgregaTarjeta createState() => new _AgregaTarjeta();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final myController = TextEditingController();
-  final myController2 = TextEditingController();
-  final myController3 = TextEditingController();
-  final myController4 = TextEditingController();
+class _AgregaTarjeta extends State<AgregaTarjeta> {
+  var myControllerCard = TextEditingController();
+  var myControllerMes = TextEditingController();
+  var myControllerYear = TextEditingController();
+  var myControllerCVV = TextEditingController();
+
+  @override
+  void initState(){
+    super.initState();
+    if(widget.tarjeta != null){
+      myControllerCard.text = widget.tarjeta.numero;
+      var vencimiento = widget.tarjeta.vencimiento.split('/');
+      myControllerMes.text = vencimiento[0];
+      myControllerYear.text = vencimiento[1];
+      myControllerCVV.text = widget.tarjeta.validacion.toString();
+    }
+  }
+
 
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
-    myController.dispose();
-    myController2.dispose();
-    myController3.dispose();
-    myController4.dispose();
+    myControllerCard.dispose();
+    myControllerMes.dispose();
+    myControllerYear.dispose();
+    myControllerCVV.dispose();
     super.dispose();
   }
 
@@ -89,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Center(
                       child:Container(
-                        child: Text('Agregar Tarjeta',
+                        child: Text('${widget.title}',
                           style: TextStyle(fontSize: 35.0, color: Color.fromRGBO(255, 173, 65, 1), fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,),
                       ),
@@ -98,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: MediaQuery.of(context).size.width - 80,
                       margin: EdgeInsets.all(5.0),
                       child: Column(
-
                         children: <Widget>[
                           TextField(
                             textAlign: TextAlign.center,
@@ -111,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Icons.card_membership, color: Color.fromRGBO(57, 52, 36, 1.0),
                               ),
                             ),
-                            controller: myController,
+                            controller: myControllerCard,
                           ),
                         ],
                       ),
@@ -142,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
 
                                   ),
-                                  controller: myController2,
+                                  controller: myControllerMes,
                                 ),
                               ],
                             ),
@@ -164,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     prefixIcon: Icon(
                                       Icons.calendar_today, color: Color.fromRGBO(57, 52, 36, 1.0),
                                     ),),
-                                  controller: myController3,
+                                  controller: myControllerYear,
                                 ),
                               ],
                             ),
@@ -179,6 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   maxLength: 3,
                                   keyboardType: TextInputType.number,
                                   obscureText: true,
+                                  
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                                     hintText: "CVV",
@@ -186,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     prefixIcon: Icon(
                                       Icons.security, color: Color.fromRGBO(57, 52, 36, 1.0),
                                     ),),
-                                    controller: myController4,
+                                    controller: myControllerCVV,
                                 ),
                               ],
                             ),
@@ -203,10 +217,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       child:Stack(
                                           children: <Widget>[
                                             Container(
-                                                alignment: Alignment.center,
-                                                width: MediaQuery.of(context).size.width - 299,
+                                                alignment: Alignment.bottomLeft,
+                                                width: 120,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(0, 15.0, 15, 0),
+                                                  padding: const EdgeInsets.fromLTRB(0, 15.0, 25, 0),
                                                   child: Material(
                                                     borderRadius: BorderRadius.circular(30.0),
                                                     color: Colors.grey[700],
@@ -216,9 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
 
                                                       onPressed: () {
-                                                        Navigator.of(context).push(
-                                                          MaterialPageRoute(builder: (context) => Carrito()),
-                                                        );
+                                                        Navigator.of(context).pop();
                                                       },
                                                       child: Text("Regresar",
                                                         textAlign: TextAlign.center,style: TextStyle(color: Colors.white),
@@ -230,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
                                             Container(
                                                 alignment: Alignment.center,
-                                                width: MediaQuery.of(context).size.width - 210,
+                                                width: MediaQuery.of(context).size.width/2,
                                                 child: Padding(
                                                   padding: const EdgeInsets.fromLTRB(100, 15, 0, 15),
                                                   child: Material(
@@ -240,9 +252,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       minWidth: MediaQuery.of(context).size.width,
                                                       padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0), //izq. arriba, derecha, abajo
                                                       onPressed: () {
-                                                        revisa(myController.text, myController2.text, myController3.text, myController4.text);
+                                                        revisa(myControllerCard.text, myControllerMes.text, myControllerYear.text, myControllerCVV.text);
                                                       },
-                                                      child: Text("Agregar",
+                                                      child: Text("Aceptar",
                                                         textAlign: TextAlign.center,style: TextStyle(color: Colors.white),
                                                       ),
 
@@ -271,7 +283,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<bool> revisa(String tar, String mes,String fec,String cvv) {
     if (tar != "" && mes != ""&& fec != ""&& cvv != "") {
       try{
-        createRecord(int.parse(cvv), tar, mes + '/'+ fec);
+        if(widget.title != 'Agregar Tarjeta'){
+          updateRecord(int.parse(cvv), tar, mes + '/'+ fec);
+        }
+        else {
+          createRecord(int.parse(cvv), tar, mes + '/'+ fec);
+        }
         showDialog(
             context: context,
             builder: (context) {
@@ -281,10 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   FlatButton(
                     child: Text('Regresa'),
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Menu()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -328,8 +342,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
   void createRecord(int cvv, String numero, String fechaVenc) {
-
     Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').document()
       .setData({ 'cvv': cvv, 'numeroTarjeta': numero, 'vencimiento': fechaVenc }, merge: true);
   }
+
+  void updateRecord(int cvv, String numero, String fechaVenc) {
+
+    Firestore.instance.collection('users').document(UserDefaults.shared.email).collection('tarjetas').document(widget.tarjeta.id)
+      .updateData({ 'cvv': cvv, 'numeroTarjeta': numero, 'vencimiento': fechaVenc });
+  }
+
 }
